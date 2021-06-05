@@ -6,10 +6,11 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 21:38:43 by aashara-          #+#    #+#             */
-/*   Updated: 2021/05/23 22:07:34 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/06/05 21:16:09 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "philo_precomp.h"
 #include "philo.h"
 
 static t_philo_bool	philo_is_valid_arg(const char *str)
@@ -46,7 +47,6 @@ int					philo_init_params(int argc, char **argv, int params[6])
 		return (PHILO_FAILURE);
 	}
 	memset((void*)params, 0, sizeof(int) * 6);
-	params[5] = -1;
 	i = 0;
 	while (++i < argc)
 	{
@@ -59,4 +59,21 @@ int					philo_init_params(int argc, char **argv, int params[6])
 		}
 	}
 	return (PHILO_SUCCESS);
+}
+
+int					philo_validate_params(int params[6])
+{
+	if (params[0] < 2)
+		dprintf(2, "Wrong parameter: number_of_philosophers\n");
+	else if (params[1] < 60)
+		dprintf(2, "Wrong parameter: time_to_die\n");
+	else if (params[2] < 20)
+		dprintf(2, "Wrong parameter: time_to_eat\n");
+	else if (params[3] < 60)
+		dprintf(2, "Wrong parameter: time_to_sleep\n");
+	else if (params[4] < 0)
+		dprintf(2, "Wrong parameter: number_of_times_each_philosopher_must_eat\n");
+	else
+		return (PHILO_SUCCESS);
+	return (PHILO_FAILURE);
 }

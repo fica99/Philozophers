@@ -6,10 +6,11 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 20:20:04 by aashara-          #+#    #+#             */
-/*   Updated: 2021/05/23 21:41:16 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/06/05 22:16:25 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "philo_precomp.h"
 #include "philo.h"
 
 t_philo_bool	philo_isspace(int c)
@@ -47,3 +48,12 @@ int				philo_atoi(const char *str)
 	return ((int)rez);
 }
 
+int				philo_get_current_time(void)
+{
+	struct timeval	tv;
+	int				i;
+
+	gettimeofday(&tv, NULL);
+	i = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+	return (i);
+}

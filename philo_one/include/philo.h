@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 18:41:58 by aashara-          #+#    #+#             */
-/*   Updated: 2021/06/05 23:05:31 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/06/06 21:36:51 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,39 @@
 # define PHILO_H
 
 /*
+** --Enums--
+*/
+/*
+** -------Philozophers actions----------
+*/
+typedef enum
+{
+	PHILO_TAKE_FORK,
+	PHILO_EATING,
+	PHILO_SLEEPING,
+	PHILO_THINKING,
+	PHILO_DIED
+}	t_philo_actions;
+/*
 ** --Structures--
 */
-
-typedef struct		s_philo_data t_philo_data;
-typedef struct		s_philo
+typedef struct				s_philo
 {
-	int				number;
-	int				left_fork;
-	int				right_fork;
-	t_philo_data	*data;
-}					t_philo;
+	int						number;
+	int						left_fork;
+	int						right_fork;
+	unsigned long			last_eat_time;
+	int						number_of_eatings;
+	 struct s_philo_data	*data;
+}							t_philo;
 
-struct		s_philo_data
+typedef struct		s_philo_data
 {
 	int				params[6];
-	int				start_time;
 	t_philo			*philozophers;
 	pthread_mutex_t	*forks;
-};
+	unsigned long	start_time;
+}					t_philo_data;
 
 /*
 ** --Functions--
@@ -43,7 +57,8 @@ struct		s_philo_data
 t_philo_bool	philo_isspace(int c);
 t_philo_bool	philo_isdigit(int c);
 int				philo_atoi(const char *str);
-int				philo_get_current_time(void);
+unsigned long	philo_get_current_time(void);
+void			philo_print_action(t_philo_actions action, t_philo *philo);
 /*
 ** ------------philo_init_params.c------------
 */

@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 20:20:04 by aashara-          #+#    #+#             */
-/*   Updated: 2021/06/05 22:16:25 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/06/06 21:33:40 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,32 @@ int				philo_atoi(const char *str)
 	return ((int)rez);
 }
 
-int				philo_get_current_time(void)
+unsigned long		philo_get_current_time(void)
 {
 	struct timeval	tv;
-	int				i;
+	unsigned long	i;
 
 	gettimeofday(&tv, NULL);
 	i = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	return (i);
+}
+
+void			philo_print_action(t_philo_actions action, t_philo *philo)
+{
+	unsigned long			time_from_start;
+	char					*text;
+
+	time_from_start = philo_get_current_time() - philo->data->start_time;
+	text = "";
+	if (action == PHILO_EATING)
+		text = "is eacting";
+	else if (action == PHILO_SLEEPING)
+		text = "is sleeping";
+	else if (action == PHILO_THINKING)
+		text = "is thinking";
+	else if (action == PHILO_TAKE_FORK)
+		text = "has taken a fork";
+	else if (action == PHILO_DIED)
+		text = "died";
+	printf("%lu\t %d %s\n", time_from_start, philo->number, text);
 }

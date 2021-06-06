@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 21:13:15 by aashara-          #+#    #+#             */
-/*   Updated: 2021/06/05 23:22:28 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/06/06 14:17:57 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,17 @@
 ** ------------pthread_mutex_init---------
 ** ------------pthread_create-------------
 ** ------------pthread_detach-------------
+** ------------pthread_mutex_lock---------
 */
 # include <pthread.h>
 /*
 ** ------------gettimeofday----------------
 */
 # include <sys/time.h>
+/*
+** ------------usleep----------------------
+*/
+# include <unistd.h>
 /*
 ** --Common macroses--
 */

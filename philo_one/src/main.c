@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 18:49:22 by aashara-          #+#    #+#             */
-/*   Updated: 2021/06/05 23:31:12 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/06/06 21:38:40 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	philo_free_data(t_philo_data *data)
 	i = -1;
 	while (++i < data->params[0])
 		pthread_mutex_destroy(data->forks + i);
+	free(data->forks);
 	data->forks = NULL;
 }
 
@@ -78,22 +79,28 @@ static int	philo_init(int argc, char **argv, t_philo_data *data)
 static int	philo_run_threads(t_philo_data *data)
 {
 	int			i;
-	pthread_t	thread;
+	pthread_t	threads[data->params[0]];
 
 	i = -1;
 	data->start_time = philo_get_current_time();
 	while (++i < data->params[0])
 	{
-		if (pthread_create(&thread, NULL, philo_run,(void*)data->philozophers + i))
+		data->philozophers[i].last_eat_time = data->start_time;
+		if (pthread_create(threads + i, NULL, philo_run, (void*)data->philozophers + i))
 		{
 			dprintf(2, "Cannot create thread\n");
 			return (PHILO_FAILURE);
 		}
-		if (pthread_detach(thread) != 0)
-		{
-			dprintf(2, "Cannot detach thread\n");
-			return (PHILO_FAILURE);
-		}
+		// if (pthread_detach(thread) != 0)
+		// {
+		// 	dprintf(2, "Cannot detach thread\n");
+		// 	return (PHILO_FAILURE);
+		// }
+	}
+	i = -1;
+	while (++i < data->params[0])
+	{
+		pthread_join(threads[i], NULL);
 	}
 	return (PHILO_SUCCESS);
 }

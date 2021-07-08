@@ -116,6 +116,7 @@ static int	philo_run_threads(t_philo_data *data)
 		// 	return (PHILO_FAILURE);
 		// }
 	}
+	// add check loop https://git.hexanyn.fr/42/philosophers/-/blob/master/philo_one/srcs/thread.c#L79
 	i = -1;
 	while (++i < data->params[0])
 	{

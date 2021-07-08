@@ -50,6 +50,12 @@ static void	philo_sleep(t_philo *philo)
 	ASSERT(res == 0);
 }
 
+static void philo_think(t_philo *philo)
+{
+	ASSERT(philo != NULL);
+	philo_print_action(PHILO_THINKING, philo);
+}
+
 void		*philo_run(void *philo_ptr)
 {
 	t_philo			*philo;
@@ -63,8 +69,8 @@ void		*philo_run(void *philo_ptr)
 		// 	&& philo->number_of_eatings >= philo->data->params[4])
 		// 	break;
 		philo_sleep(philo);
-		ASSERT(philo != NULL);
-		philo_print_action(PHILO_THINKING, philo);
+		philo_think(philo);
+		// check https://git.hexanyn.fr/42/philosophers/-/blob/master/philo_one/srcs/thread.c#L79
 	}
 	return (NULL);
 }

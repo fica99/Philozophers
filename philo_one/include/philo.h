@@ -37,7 +37,7 @@ typedef struct				s_philo
 	int						right_fork;
 	unsigned long			last_eat_time;
 	int						number_of_eatings;
-	 struct s_philo_data	*data;
+	struct s_philo_data		*data;
 }							t_philo;
 
 typedef struct		s_philo_data

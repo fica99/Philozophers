@@ -1,3 +1,5 @@
+.devcontainer/
+philo_one/philo_one
 # Prerequisites
 *.d
 

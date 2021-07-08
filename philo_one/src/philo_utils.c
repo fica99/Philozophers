@@ -32,6 +32,7 @@ int				philo_atoi(const char *str)
 	size_t					i;
 	long long				rez;
 
+	ASSERT(str != NULL);
 	i = 0;
 	while (philo_isspace(str[i]))
 		++i;
@@ -52,8 +53,10 @@ unsigned long		philo_get_current_time(void)
 {
 	struct timeval	tv;
 	unsigned long	i;
+	int				res;
 
-	gettimeofday(&tv, NULL);
+	res = gettimeofday(&tv, NULL); // add protect
+	ASSERT(res == 0);
 	i = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	return (i);
 }
@@ -63,6 +66,10 @@ void			philo_print_action(t_philo_actions action, t_philo *philo)
 	unsigned long			time_from_start;
 	char					*text;
 
+	ASSERT(philo != NULL);
+	ASSERT(philo->data != NULL);
+	if (!philo || !philo->data)
+		return ;
 	time_from_start = philo_get_current_time() - philo->data->start_time;
 	text = "";
 	if (action == PHILO_EATING)

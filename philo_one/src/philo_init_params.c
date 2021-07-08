@@ -18,6 +18,8 @@ static t_philo_bool	philo_is_valid_arg(const char *str)
 	size_t				i;
 	long long			rez;
 
+	if (str == NULL)
+		return (Philo_false);
 	i = 0;
 	while (philo_isspace(str[i]))
 		++i;
@@ -41,15 +43,18 @@ int					philo_init_params(int argc, char **argv, int params[6])
 {
 	int	i;
 
+	ASSERT(params != NULL);
+	ASSERT(argv != NULL);
 	if (argc != 5 && argc != 6)
 	{
 		dprintf(2, "Invalid number of arguments\n");
 		return (PHILO_FAILURE);
 	}
-	memset((void*)params, 0, sizeof(int) * 6);
+	memset((void*)params, 0, sizeof(int) * 6); // add protect
 	i = 0;
 	while (++i < argc)
 	{
+		ASSERT(argv[i] != NULL);
 		if (philo_is_valid_arg(argv[i]) == Philo_true)
 			params[i - 1] = philo_atoi(argv[i]);
 		else
@@ -63,6 +68,7 @@ int					philo_init_params(int argc, char **argv, int params[6])
 
 int					philo_validate_params(int params[6])
 {
+	ASSERT(params != NULL);
 	if (params[0] < 2)
 		dprintf(2, "Wrong parameter: number_of_philosophers\n");
 	else if (params[1] < 60)

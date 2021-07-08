@@ -19,20 +19,35 @@ time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]"
 static void	philo_free_data(t_philo_data *data)
 {
 	int	i;
+	int	res;
 
-	free(data->philozophers);
-	data->philozophers = NULL;
+	if (data == NULL)
+		return;
+	if (data->philozophers != NULL)
+	{
+		free(data->philozophers);
+		data->philozophers = NULL;
+	}
 	i = -1;
 	while (++i < data->params[0])
-		pthread_mutex_destroy(data->forks + i);
-	free(data->forks);
-	data->forks = NULL;
+	{
+		ASSERT(data->forks + i != NULL);
+		res = pthread_mutex_destroy(data->forks + i);//maybe add protection
+		ASSERT(res == 0);
+	}
+	if (data->forks)
+	{
+		free(data->forks);
+		data->forks = NULL;
+	}
 }
 
 static int	philo_init_data(t_philo_data *data)
 {
 	int	i;
 
+	ASSERT(data != NULL);
+	ASSERT(data->params[0] > 0);
 	if (!(data->philozophers = (t_philo*)malloc(sizeof(t_philo) *
 				data->params[0])) ||
 		!(data->forks = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t) *
@@ -59,7 +74,8 @@ static int	philo_init_data(t_philo_data *data)
 
 static int	philo_init(int argc, char **argv, t_philo_data *data)
 {
-	memset((void*)data, 0, sizeof(t_philo_data));
+	ASSERT(data != NULL);
+	memset((void*)data, 0, sizeof(t_philo_data));//add protect
 	if (philo_init_params(argc, argv, data->params) == PHILO_FAILURE)
 	{
 		dprintf(2, "\nUsage\n  %s %s\n", argv[0], PHILO_ARGS);
@@ -78,6 +94,9 @@ static int	philo_init(int argc, char **argv, t_philo_data *data)
 
 static int	philo_run_threads(t_philo_data *data)
 {
+	ASSERT(data != NULL);
+	ASSERT(data->params != NULL);
+	ASSERT(data->params[0] > 0);
 	int			i;
 	pthread_t	threads[data->params[0]];
 
@@ -86,7 +105,7 @@ static int	philo_run_threads(t_philo_data *data)
 	while (++i < data->params[0])
 	{
 		data->philozophers[i].last_eat_time = data->start_time;
-		if (pthread_create(threads + i, NULL, philo_run, (void*)data->philozophers + i))
+		if (pthread_create(threads + i, NULL, philo_run, (void*)(data->philozophers + i)) != 0)
 		{
 			dprintf(2, "Cannot create thread\n");
 			return (PHILO_FAILURE);

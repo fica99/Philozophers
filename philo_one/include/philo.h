@@ -68,4 +68,5 @@ int				philo_validate_params(int params[6]);
 ** ------------philo_run.c---------------------
 */
 void			*philo_run(void *philo);
+void			philo_main_thread(t_philo_data *data);
 #endif

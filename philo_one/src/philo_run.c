@@ -74,3 +74,23 @@ void		*philo_run(void *philo_ptr)
 	}
 	return (NULL);
 }
+
+
+void			philo_main_thread(t_philo_data *data)
+{
+	ASSERT(data != NULL);
+	int	i;
+
+	while (1)
+	{
+		i = -1;
+		while (++i < data->params[0])
+		{
+			if (data->philozophers[i].last_eat_time + data->params[1] < philo_get_current_time())
+			{
+				philo_print_action(PHILO_DIED, data->philozophers + i);
+				return;
+			}
+		}
+	}
+}

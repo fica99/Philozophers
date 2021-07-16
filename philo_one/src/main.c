@@ -110,18 +110,13 @@ static int	philo_run_threads(t_philo_data *data)
 			dprintf(2, "Cannot create thread\n");
 			return (PHILO_FAILURE);
 		}
-		// if (pthread_detach(thread) != 0)
-		// {
-		// 	dprintf(2, "Cannot detach thread\n");
-		// 	return (PHILO_FAILURE);
-		// }
+		if (pthread_detach(threads[i]) != 0)
+		{
+			dprintf(2, "Cannot detach thread\n");
+			return (PHILO_FAILURE);
+		}
 	}
-	// add check loop https://git.hexanyn.fr/42/philosophers/-/blob/master/philo_one/srcs/thread.c#L79
-	i = -1;
-	while (++i < data->params[0])
-	{
-		pthread_join(threads[i], NULL);
-	}
+	philo_main_thread(data);
 	return (PHILO_SUCCESS);
 }
 

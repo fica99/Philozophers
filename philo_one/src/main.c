@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 18:49:22 by aashara-          #+#    #+#             */
-/*   Updated: 2021/06/06 21:38:40 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/07/18 23:48:39 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]"
 static void	philo_free_data(t_philo_data *data)
 {
 	int	i;
-	int	res;
 
+	ASSERT(data != NULL);
+	ASSERT(data->philozophers != NULL);
+	ASSERT(data->params != NULL);
 	if (data == NULL)
 		return;
 	if (data->philozophers != NULL)
@@ -32,8 +34,11 @@ static void	philo_free_data(t_philo_data *data)
 	while (++i < data->params[0])
 	{
 		ASSERT(data->forks + i != NULL);
-		res = pthread_mutex_destroy(data->forks + i);//maybe add protection
-		ASSERT(res == 0);
+		if (pthread_mutex_destroy(data->forks + i) != 0)
+		{
+			dprintf(2, "Cannot destroy mutex\n");
+			return;
+		}
 	}
 	if (data->forks)
 	{
@@ -47,6 +52,7 @@ static int	philo_init_data(t_philo_data *data)
 	int	i;
 
 	ASSERT(data != NULL);
+	ASSERT(data->params != NULL)
 	ASSERT(data->params[0] > 0);
 	if (!(data->philozophers = (t_philo*)malloc(sizeof(t_philo) *
 				data->params[0])) ||
@@ -56,6 +62,8 @@ static int	philo_init_data(t_philo_data *data)
 		dprintf(2, "Cannot allocate memory\n");
 		return (PHILO_FAILURE);
 	}
+	ASSERT(data->philozophers != NULL);
+	ASSERT(data->forks != NULL);
 	i = -1;
 	while (++i < data->params[0])
 	{
@@ -75,7 +83,7 @@ static int	philo_init_data(t_philo_data *data)
 static int	philo_init(int argc, char **argv, t_philo_data *data)
 {
 	ASSERT(data != NULL);
-	memset((void*)data, 0, sizeof(t_philo_data));//add protect
+	memset((void*)data, 0, sizeof(t_philo_data));
 	if (philo_init_params(argc, argv, data->params) == PHILO_FAILURE)
 	{
 		dprintf(2, "\nUsage\n  %s %s\n", argv[0], PHILO_ARGS);
@@ -102,6 +110,7 @@ static int	philo_run_threads(t_philo_data *data)
 
 	i = -1;
 	data->start_time = philo_get_current_time();
+	data->is_running = Philo_true;
 	while (++i < data->params[0])
 	{
 		data->philozophers[i].last_eat_time = data->start_time;
@@ -110,32 +119,22 @@ static int	philo_run_threads(t_philo_data *data)
 			dprintf(2, "Cannot create thread\n");
 			return (PHILO_FAILURE);
 		}
-		// if (pthread_detach(thread) != 0)
-		// {
-		// 	dprintf(2, "Cannot detach thread\n");
-		// 	return (PHILO_FAILURE);
-		// }
 	}
-	// add check loop https://git.hexanyn.fr/42/philosophers/-/blob/master/philo_one/srcs/thread.c#L79
-	i = -1;
-	while (++i < data->params[0])
-	{
-		pthread_join(threads[i], NULL);
-	}
+	philo_main_thread(data);
+	// JOIN THREADS
 	return (PHILO_SUCCESS);
 }
 
 int			main(int argc, char **argv)
 {
 	t_philo_data	data;
+	int				res;
 
 	if (philo_init(argc, argv, &data) == PHILO_FAILURE)
 		return (EXIT_FAILURE);
-	if (philo_run_threads(&data) == PHILO_FAILURE)
-	{
-		philo_free_data(&data);
-		return (EXIT_FAILURE);
-	}
+	res = philo_run_threads(&data);
 	philo_free_data(&data);
+	if (res == PHILO_FAILURE)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

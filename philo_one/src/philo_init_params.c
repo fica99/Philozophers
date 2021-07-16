@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 21:38:43 by aashara-          #+#    #+#             */
-/*   Updated: 2021/06/05 21:16:09 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/07/17 12:24:07 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static t_philo_bool	philo_is_valid_arg(const char *str)
 	size_t				i;
 	long long			rez;
 
+	ASSERT(str != NULL);
 	if (str == NULL)
 		return (Philo_false);
 	i = 0;
@@ -50,7 +51,7 @@ int					philo_init_params(int argc, char **argv, int params[6])
 		dprintf(2, "Invalid number of arguments\n");
 		return (PHILO_FAILURE);
 	}
-	memset((void*)params, 0, sizeof(int) * 6); // add protect
+	memset((void*)params, 0, sizeof(int) * 6);
 	i = 0;
 	while (++i < argc)
 	{
@@ -69,15 +70,15 @@ int					philo_init_params(int argc, char **argv, int params[6])
 int					philo_validate_params(int params[6])
 {
 	ASSERT(params != NULL);
-	if (params[0] < 2)
+	if (params[0] < PHILO_MIN_NB_PHILO)
 		dprintf(2, "Wrong parameter: number_of_philosophers\n");
-	else if (params[1] < 60)
+	else if (params[1] < PHILO_MIN_TIME_TO_DIE)
 		dprintf(2, "Wrong parameter: time_to_die\n");
-	else if (params[2] < 20)
+	else if (params[2] < PHILO_MIN_TIME_TO_EAT)
 		dprintf(2, "Wrong parameter: time_to_eat\n");
-	else if (params[3] < 60)
+	else if (params[3] < PHILO_MIN_TIME_TO_SLEEP)
 		dprintf(2, "Wrong parameter: time_to_sleep\n");
-	else if (params[4] < 0)
+	else if (params[4] < PHILO_MIN_NB_EATINGS)
 		dprintf(2, "Wrong parameter: number_of_times_each_philosopher_must_eat\n");
 	else
 		return (PHILO_SUCCESS);

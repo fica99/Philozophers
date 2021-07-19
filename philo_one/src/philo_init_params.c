@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "philo_precomp.h"
+#include "philo_error.h"
 #include "philo.h"
 
 static t_philo_bool	philo_is_valid_arg(const char *str)
@@ -18,7 +19,7 @@ static t_philo_bool	philo_is_valid_arg(const char *str)
 	size_t				i;
 	long long			rez;
 
-	ASSERT(str != NULL);
+	PHILO_ASSERT(str != NULL);
 	if (str == NULL)
 		return (Philo_false);
 	i = 0;
@@ -40,46 +41,40 @@ static t_philo_bool	philo_is_valid_arg(const char *str)
 	return (Philo_true);
 }
 
-int					philo_init_params(int argc, char **argv, int params[6])
+int					philo_init_params(int argc, char **argv, int params[PHILO_MAX_NB_ARGS])
 {
 	int	i;
 
-	ASSERT(params != NULL);
-	ASSERT(argv != NULL);
-	if (argc != 5 && argc != 6)
-	{
-		dprintf(2, "Invalid number of arguments\n");
-		return (PHILO_FAILURE);
-	}
-	memset((void*)params, 0, sizeof(int) * 6);
+	PHILO_ASSERT(params != NULL);
+	PHILO_ASSERT(argv != NULL);
+	if (argc != PHILO_MAX_NB_ARGS - 1 && argc != PHILO_MAX_NB_ARGS)
+		PHILO_ERROR_RETURN(PHILO_FAILURE, "Invalid number of arguments\n");
+	memset((void*)params, 0, sizeof(int) * PHILO_MAX_NB_ARGS);
 	i = 0;
 	while (++i < argc)
 	{
-		ASSERT(argv[i] != NULL);
+		PHILO_ASSERT(argv[i] != NULL);
 		if (philo_is_valid_arg(argv[i]) == Philo_true)
 			params[i - 1] = philo_atoi(argv[i]);
 		else
-		{
-			dprintf(2, "Invalid argument: %s\n", argv[i]);
-			return (PHILO_FAILURE);
-		}
+			PHILO_ERROR_RETURN(PHILO_FAILURE, "Invalid argument: %s\n", argv[i]);
 	}
 	return (PHILO_SUCCESS);
 }
 
-int					philo_validate_params(int params[6])
+int					philo_validate_params(int params[PHILO_MAX_NB_ARGS])
 {
-	ASSERT(params != NULL);
+	PHILO_ASSERT(params != NULL);
 	if (params[0] < PHILO_MIN_NB_PHILO)
-		dprintf(2, "Wrong parameter: number_of_philosophers\n");
+		PHILO_ERROR("Wrong parameter: %s\n", PHILO_NB_PHILO);
 	else if (params[1] < PHILO_MIN_TIME_TO_DIE)
-		dprintf(2, "Wrong parameter: time_to_die\n");
+		PHILO_ERROR("Wrong parameter: %s\n", PHILO_TIME_TO_DIE);
 	else if (params[2] < PHILO_MIN_TIME_TO_EAT)
-		dprintf(2, "Wrong parameter: time_to_eat\n");
+		PHILO_ERROR("Wrong parameter: %s\n", PHILO_TIME_TO_EAT);
 	else if (params[3] < PHILO_MIN_TIME_TO_SLEEP)
-		dprintf(2, "Wrong parameter: time_to_sleep\n");
+		PHILO_ERROR("Wrong parameter: %s\n", PHILO_TIME_TO_SLEEP);
 	else if (params[4] < PHILO_MIN_NB_EATINGS)
-		dprintf(2, "Wrong parameter: number_of_times_each_philosopher_must_eat\n");
+		PHILO_ERROR("Wrong parameter: %s\n", PHILO_NB_EATINGS);
 	else
 		return (PHILO_SUCCESS);
 	return (PHILO_FAILURE);

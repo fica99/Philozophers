@@ -50,17 +50,6 @@
 */
 # include <unistd.h>
 /*
-** ------------assert----------------------
-*/
-# include <assert.h>
-/*
-** --Common macroses--
-*/
-/*
-** ------------Assert macroses-----
-*/
-# define ASSERT(x) assert(x);
-/*
 ** ------------Return status macroses-----
 */
 # define PHILO_SUCCESS 0

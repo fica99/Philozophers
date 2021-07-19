@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "philo_precomp.h"
+#include "philo_error.h"
 #include "philo.h"
 
 t_philo_bool	philo_isspace(int c)
@@ -32,7 +33,7 @@ int				philo_atoi(const char *str)
 	size_t					i;
 	long long				rez;
 
-	ASSERT(str != NULL);
+	PHILO_ASSERT(str != NULL);
 	i = 0;
 	while (philo_isspace(str[i]))
 		++i;
@@ -55,8 +56,9 @@ unsigned long		philo_get_current_time(void)
 	unsigned long	i;
 	int				res;
 
-	res = gettimeofday(&tv, NULL); // add protect
-	ASSERT(res == 0);
+	if ((res = gettimeofday(&tv, NULL)) != 0)
+		PHILO_ERROR("Error in gettimeofday");
+	PHILO_ASSERT(res == 0);
 	i = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	return (i);
 }
@@ -66,21 +68,19 @@ void			philo_print_action(t_philo_actions action, t_philo *philo)
 	unsigned long			time_from_start;
 	char					*text;
 
-	ASSERT(philo != NULL);
-	ASSERT(philo->data != NULL);
-	if (!philo || !philo->data)
-		return ;
+	PHILO_ASSERT(philo != NULL);
+	PHILO_ASSERT(philo->data != NULL);
 	time_from_start = philo_get_current_time() - philo->data->start_time;
 	text = "";
 	if (action == PHILO_EATING)
-		text = "is eacting";
+		text = PHILO_EATING_TEXT;
 	else if (action == PHILO_SLEEPING)
-		text = "is sleeping";
+		text = PHILO_SLEEPING_TEXT;
 	else if (action == PHILO_THINKING)
-		text = "is thinking";
+		text = PHILO_THINKING_TEXT;
 	else if (action == PHILO_TAKE_FORK)
-		text = "has taken a fork";
+		text = PHILO_TAKE_FORK_TEXT;
 	else if (action == PHILO_DIED)
-		text = "died";
+		text = PHILO_DIED_TEXT;
 	printf("%lu\t %d %s\n", time_from_start, philo->number, text);
 }

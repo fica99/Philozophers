@@ -17,13 +17,30 @@
 ** --Macroses--
 */
 /*
+** -------Params names--------------------
+*/
+# define PHILO_NB_PHILO "number_of_philosophers"
+# define PHILO_TIME_TO_DIE "time_to_die"
+# define PHILO_TIME_TO_EAT "time_to_eat"
+# define PHILO_TIME_TO_SLEEP "time_to_sleep"
+# define PHILO_NB_EATINGS "number_of_times_each_philosopher_must_eat"
+/*
 ** -------Limits of params-------------
 */
+# define PHILO_MAX_NB_ARGS 6
 # define PHILO_MIN_NB_PHILO 2
 # define PHILO_MIN_TIME_TO_DIE 1
 # define PHILO_MIN_TIME_TO_EAT 1
 # define PHILO_MIN_TIME_TO_SLEEP 1
 # define PHILO_MIN_NB_EATINGS 0
+/*
+** -------Philozophers actions text-----
+*/
+# define PHILO_TAKE_FORK_TEXT "has taken a fork"
+# define PHILO_EATING_TEXT "is eating"
+# define PHILO_SLEEPING_TEXT "is sleeping"
+# define PHILO_THINKING_TEXT "is thinking"
+# define PHILO_DIED_TEXT "died"
 /*
 ** --Enums--
 */
@@ -43,17 +60,17 @@ typedef enum
 */
 typedef struct				s_philo
 {
-	int						number;
-	int						left_fork;
-	int						right_fork;
+	unsigned int			number;
+	unsigned int			left_fork;
+	unsigned int			right_fork;
 	unsigned long			last_eat_time;
-	int						number_of_eatings;
+	unsigned int			number_of_eatings;
 	struct s_philo_data		*data;
 }							t_philo;
 
 typedef struct		s_philo_data
 {
-	int				params[6];
+	int				params[PHILO_MAX_NB_ARGS];
 	t_philo			*philozophers;
 	pthread_mutex_t	*forks;
 	unsigned long	start_time;

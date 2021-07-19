@@ -19,13 +19,14 @@ HDR_DIR	=		include
 OBJ_DIR	=		int
 
 # ------------  SOURCE FILES  ------------------------------------------------ #
-PRE_FLS	=		philo_precomp.c
+PRE_FLS	=		philo_precomp.c\
+				philo_error.c
 
 SRC_FLS	=		$(PRE_FLS) \
 				main.c \
 				philo_utils.c \
 				philo_init_params.c \
-				philo_run.c
+				philo_run.c \
 
 # ------------  FILEPATHS  --------------------------------------------------- #
 SRCS	=		$(addprefix $(SRC_DIR)/, $(SRC_FLS))
@@ -33,9 +34,11 @@ OBJS	=		$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o, $(SRCS))
 DEPS	=		$(OBJS:.o=.d)
 
 # ------------  FLAGS  ------------------------------------------------------- #
-CC		=		gcc #-DNDEBUG
+CC		=		gcc
 RM		=		rm -rf
 CFLGS	=		-Wall -Werror -Wextra
+DFLGS	=		-DPHILO_ENABLE_ASSERTS -O0 -g
+EFLGS	=		-DPHILO_ENABLE_ERRORS
 IFLGS	=		-I $(HDR_DIR)
 DFLGS	=		-MMD -MP
 LFLGS	=		-lpthread
@@ -47,7 +50,7 @@ all: $(NAME)
 
 -include $(DEPS)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) $(CFLGS) $(DFLGS) -c -o $@ $< $(IFLGS)
+	$(CC) $(DFLGS) $(EFLGS) $(CFLGS) $(DFLGS) -c -o $@ $< $(IFLGS)
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)

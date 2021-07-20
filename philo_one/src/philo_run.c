@@ -77,22 +77,28 @@ void		*philo_run(void *philo_ptr)
 void			philo_main_thread(t_philo_data *data)
 {
 	PHILO_ASSERT(data != NULL);
-	int	i;
+	int				i;
+	t_philo_bool	is_eated;
 
-	while (Philo_true)
+	while (data->is_running == Philo_true)
 	{
 		i = -1;
 		PHILO_ASSERT(data->params != NULL);
+		is_eated = Philo_true;
 		while (++i < data->params[0])
 		{
 			PHILO_ASSERT(data->philozophers + i != NULL);
 			PHILO_ASSERT(data->params[1] >= 0);
 			if (data->philozophers[i].last_eat_time + data->params[1] < philo_get_current_time())
 			{
-				data->is_running = Philo_false;
 				philo_print_action(PHILO_DIED, data->philozophers + i);
-				return;
+				data->is_running = Philo_false;
+				return ;
 			}
+			if (data->params[4] == 0 ||
+				(int)data->philozophers[i].number_of_eatings < data->params[4])
+				is_eated = Philo_false;
 		}
+		data->is_running = !is_eated;
 	}
 }

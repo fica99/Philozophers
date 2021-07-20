@@ -70,6 +70,8 @@ void			philo_print_action(t_philo_actions action, t_philo *philo)
 
 	PHILO_ASSERT(philo != NULL);
 	PHILO_ASSERT(philo->data != NULL);
+	if (philo->data->is_running == Philo_false)
+		return ;
 	time_from_start = philo_get_current_time() - philo->data->start_time;
 	text = "";
 	if (action == PHILO_EATING)

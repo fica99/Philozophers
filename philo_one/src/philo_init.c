@@ -41,7 +41,7 @@ static t_philo_bool	philo_is_valid_arg(const char *str)
 	return (Philo_true);
 }
 
-int					philo_init_params(int argc, char **argv, int params[PHILO_MAX_NB_ARGS])
+static int			philo_init_params(int argc, char **argv, int params[PHILO_MAX_NB_ARGS])
 {
 	int	i;
 
@@ -62,7 +62,7 @@ int					philo_init_params(int argc, char **argv, int params[PHILO_MAX_NB_ARGS])
 	return (PHILO_SUCCESS);
 }
 
-int					philo_validate_params(int params[PHILO_MAX_NB_ARGS])
+static int			philo_validate_params(int params[PHILO_MAX_NB_ARGS])
 {
 	PHILO_ASSERT(params != NULL);
 	if (params[0] < PHILO_MIN_NB_PHILO)
@@ -78,4 +78,50 @@ int					philo_validate_params(int params[PHILO_MAX_NB_ARGS])
 	else
 		return (PHILO_SUCCESS);
 	return (PHILO_FAILURE);
+}
+
+
+static int			philo_init_data(t_philo_data *data)
+{
+	int	i;
+
+	PHILO_ASSERT(data != NULL);
+	PHILO_ASSERT(data->params != NULL);
+	PHILO_ASSERT(data->params[0] > 0);
+	if (!(data->philozophers = (t_philo*)malloc(sizeof(t_philo) *
+				data->params[0])) ||
+		!(data->forks = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t) *
+				data->params[0])))
+		PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot allocate memory\n");
+	if (pthread_mutex_init(&data->mutex_writing, NULL))
+		PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot init mutex writing\n");
+	i = -1;
+	while (++i < data->params[0])
+	{
+		data->philozophers[i].number = i + 1;
+		data->philozophers[i].data = data;
+		data->philozophers[i].left_fork = i;
+		data->philozophers[i].right_fork = (i + 1) % data->params[0];
+		if (pthread_mutex_init(data->forks + i, NULL))
+			PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot init mutexes for forks\n");
+	}
+	return (PHILO_SUCCESS);
+}
+
+int					philo_init(int argc, char **argv, t_philo_data *data)
+{
+	PHILO_ASSERT(data != NULL);
+	memset((void*)data, 0, sizeof(t_philo_data));
+	if (philo_init_params(argc, argv, data->params) == PHILO_FAILURE)
+		PHILO_ERROR_RETURN(PHILO_FAILURE, "\nUsage\n  %s %s %s %s %s [%s]\n", argv[0], PHILO_NB_PHILO,
+		PHILO_TIME_TO_DIE, PHILO_TIME_TO_EAT, PHILO_TIME_TO_SLEEP, PHILO_NB_EATINGS);
+	if (philo_validate_params(data->params) == PHILO_FAILURE)
+		return (PHILO_FAILURE);
+	if (philo_init_data(data) == PHILO_FAILURE)
+	{
+		PHILO_ERROR("Error in data initialization\n");
+		philo_free_data(data);
+		return (PHILO_FAILURE);
+	}
+	return (PHILO_SUCCESS);
 }

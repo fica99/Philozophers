@@ -25,7 +25,7 @@ PRE_FLS	=		philo_precomp.c\
 SRC_FLS	=		$(PRE_FLS) \
 				main.c \
 				philo_utils.c \
-				philo_init_params.c \
+				philo_init.c \
 				philo_run.c \
 
 # ------------  FILEPATHS  --------------------------------------------------- #

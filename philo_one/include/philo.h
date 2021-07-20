@@ -101,13 +101,16 @@ int				philo_atoi(const char *str);
 unsigned long	philo_get_current_time(void);
 void			philo_print_action(t_philo_actions action, t_philo *philo);
 /*
-** ------------philo_init_params.c------------
+** ------------philo_init.c------------
 */
-int				philo_init_params(int argc, char **argv, int params[6]);
-int				philo_validate_params(int params[6]);
+int				philo_init(int argc, char **argv, t_philo_data *data);
 /*
 ** ------------philo_run.c---------------------
 */
 void			*philo_run(void *philo);
 void			philo_main_thread(t_philo_data *data);
+/*
+** ------------main.c--------------------------
+*/
+void			philo_free_data(t_philo_data *data);
 #endif

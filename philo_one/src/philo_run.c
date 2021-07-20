@@ -21,21 +21,17 @@ static int	philo_eat(t_philo *philo)
 	PHILO_ASSERT(philo != NULL);
 	PHILO_ASSERT(philo->data != NULL);
 	PHILO_ASSERT(philo->data->forks != NULL);
-	if (pthread_mutex_lock(philo->data->forks + philo->left_fork) != 0)
-		PHILO_ERROR_RETURN(PHILO_FAILURE, "Error in pthread_mutex_lock\n");
+	PHILO_LOCK(philo->data->forks + philo->left_fork);
 	philo_print_action(PHILO_TAKE_FORK, philo);
-	if (pthread_mutex_lock(philo->data->forks + philo->right_fork) != 0)
-		PHILO_ERROR_RETURN(PHILO_FAILURE, "Error in pthread_mutex_lock\n");
+	PHILO_LOCK(philo->data->forks + philo->right_fork);
 	philo_print_action(PHILO_TAKE_FORK, philo);
 	philo->last_eat_time = philo_get_current_time();
 	philo_print_action(PHILO_EATING, philo);
 	if((res = usleep(philo->data->params[2] * 1000)) != 0)
 		PHILO_ERROR("Error in usleep");
 	PHILO_ASSERT(res == 0);
-	if (pthread_mutex_unlock(philo->data->forks + philo->left_fork) != 0)
-		PHILO_ERROR_RETURN(PHILO_FAILURE, "Error in pthread_mutex_unlock\n");
-	if (pthread_mutex_unlock(philo->data->forks + philo->right_fork) != 0)
-		PHILO_ERROR_RETURN(PHILO_FAILURE, "Error in pthread_mutex_unlock\n");
+	PHILO_UNLOCK(philo->data->forks + philo->left_fork);
+	PHILO_UNLOCK(philo->data->forks + philo->right_fork);
 	++philo->number_of_eatings;
 	return (PHILO_SUCCESS);
 }

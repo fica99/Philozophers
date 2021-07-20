@@ -82,5 +82,7 @@ void			philo_print_action(t_philo_actions action, t_philo *philo)
 		text = PHILO_TAKE_FORK_TEXT;
 	else if (action == PHILO_DIED)
 		text = PHILO_DIED_TEXT;
+	PHILO_LOCK(&philo->data->mutex_writing);
 	printf("%lu\t %d %s\n", time_from_start, philo->number, text);
+	PHILO_UNLOCK(&philo->data->mutex_writing);
 }

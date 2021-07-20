@@ -28,12 +28,14 @@ static void	philo_free_data(t_philo_data *data)
 		free(data->philozophers);
 		data->philozophers = NULL;
 	}
+	if (pthread_mutex_destroy(&data->mutex_writing) != 0)
+		PHILO_ERROR_RETURN(, "Cannot destroy mutex writing\n");
 	i = -1;
 	while (++i < data->params[0])
 	{
 		PHILO_ASSERT(data->forks + i != NULL);
 		if (pthread_mutex_destroy(data->forks + i) != 0)
-			PHILO_ERROR_RETURN(, "Cannot destroy mutex\n");
+			PHILO_ERROR_RETURN(, "Cannot destroy forkes mutexes\n");
 	}
 	if (data->forks != NULL)
 	{
@@ -54,6 +56,8 @@ static int	philo_init_data(t_philo_data *data)
 		!(data->forks = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t) *
 				data->params[0])))
 		PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot allocate memory\n");
+	if (pthread_mutex_init(&data->mutex_writing, NULL))
+		PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot init mutex writing\n");
 	i = -1;
 	while (++i < data->params[0])
 	{

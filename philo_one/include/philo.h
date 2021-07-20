@@ -42,6 +42,17 @@
 # define PHILO_THINKING_TEXT "is thinking"
 # define PHILO_DIED_TEXT "died"
 /*
+** -------Mutex lock/unlock-------------
+*/
+# define PHILO_LOCK(mutex) {                            \
+	if (pthread_mutex_lock(mutex) != 0)                 \
+		PHILO_ERROR("Error in pthread_mutex_lock\n");   \
+}
+# define PHILO_UNLOCK(mutex) {                          \
+	if (pthread_mutex_unlock(mutex) != 0)               \
+		PHILO_ERROR("Error in pthread_mutex_unlock\n"); \
+}
+/*
 ** --Enums--
 */
 /*
@@ -75,6 +86,7 @@ typedef struct		s_philo_data
 	pthread_mutex_t	*forks;
 	unsigned long	start_time;
 	t_philo_bool	is_running;
+	pthread_mutex_t	mutex_writing;
 }					t_philo_data;
 
 /*

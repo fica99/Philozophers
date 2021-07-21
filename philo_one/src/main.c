@@ -52,9 +52,9 @@ static int	philo_run_threads(t_philo_data *data)
 	while (++i < data->params[0])
 	{
 		PHILO_ASSERT(data->philozophers + i != NULL);
-		data->philozophers[i].last_eat_time = data->start_time;
 		if (pthread_create(threads + i, NULL, philo_run, (void*)(data->philozophers + i)) != 0)
 			PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot create thread %d\n", i);
+		usleep(1000); // add protect
 	}
 	philo_main_thread(data);
 	i = -1;

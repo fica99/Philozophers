@@ -112,11 +112,10 @@ int					philo_init(int argc, char **argv, t_philo_data *data)
 {
 	PHILO_ASSERT(data != NULL);
 	memset((void*)data, 0, sizeof(t_philo_data));
-	if (philo_init_params(argc, argv, data->params) == PHILO_FAILURE)
+	if (philo_init_params(argc, argv, data->params) == PHILO_FAILURE
+	|| philo_validate_params(data->params) == PHILO_FAILURE)
 		PHILO_ERROR_RETURN(PHILO_FAILURE, "\nUsage\n  %s %s %s %s %s [%s]\n", argv[0], PHILO_NB_PHILO,
 		PHILO_TIME_TO_DIE, PHILO_TIME_TO_EAT, PHILO_TIME_TO_SLEEP, PHILO_NB_EATINGS);
-	if (philo_validate_params(data->params) == PHILO_FAILURE)
-		return (PHILO_FAILURE);
 	if (philo_init_data(data) == PHILO_FAILURE)
 	{
 		PHILO_ERROR("Error in data initialization\n");

@@ -16,7 +16,7 @@
 
 static int	philo_eat(t_philo *philo)
 {
-	int	res;
+	int				tmp;
 
 	PHILO_ASSERT(philo != NULL);
 	PHILO_ASSERT(philo->data != NULL);
@@ -27,9 +27,9 @@ static int	philo_eat(t_philo *philo)
 	philo_print_action(PHILO_TAKE_FORK, philo);
 	philo->last_eat_time = philo_get_current_time();
 	philo_print_action(PHILO_EATING, philo);
-	if((res = usleep(philo->data->params[2] * 1000)) != 0)
+	if((tmp = usleep(philo->data->params[2] * 1000)) != 0)
 		PHILO_ERROR("Error in usleep");
-	PHILO_ASSERT(res == 0);
+	PHILO_ASSERT(tmp == 0);
 	PHILO_UNLOCK(philo->data->forks + philo->left_fork);
 	PHILO_UNLOCK(philo->data->forks + philo->right_fork);
 	++philo->number_of_eatings;
@@ -63,6 +63,7 @@ void		*philo_run(void *philo_ptr)
 	PHILO_ASSERT(philo_ptr != NULL);
 	philo = philo_ptr;
 	PHILO_ASSERT(philo->data != NULL);
+	philo->last_eat_time = philo->data->start_time;
 	while (philo->data->is_running == Philo_true)
 	{
 		if (philo_eat(philo) == PHILO_FAILURE)

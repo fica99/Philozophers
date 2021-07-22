@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 20:20:04 by aashara-          #+#    #+#             */
-/*   Updated: 2021/06/06 21:33:40 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/07/22 23:23:18 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ void			philo_print_action(t_philo_actions action, t_philo *philo)
 
 	PHILO_ASSERT(philo != NULL);
 	PHILO_ASSERT(philo->data != NULL);
-	if (philo->data->is_running == Philo_false)
-		return ;
 	time_from_start = philo_get_current_time() - philo->data->start_time;
 	text = "";
 	if (action == PHILO_EATING)
@@ -85,6 +83,7 @@ void			philo_print_action(t_philo_actions action, t_philo *philo)
 	else if (action == PHILO_DIED)
 		text = PHILO_DIED_TEXT;
 	PHILO_LOCK(&philo->data->mutex_writing);
-	printf("%lu\t %d %s\n", time_from_start, philo->number, text);
+	if (philo->data->is_running)
+		printf("%-10lu %d %s\n", time_from_start, philo->number, text);
 	PHILO_UNLOCK(&philo->data->mutex_writing);
 }

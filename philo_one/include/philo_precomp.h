@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 21:13:15 by aashara-          #+#    #+#             */
-/*   Updated: 2021/06/06 14:17:57 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/07/22 22:14:31 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,18 @@
 */
 # include <unistd.h>
 /*
+** --Macroses--
+*/
+/*
 ** ------------Return status macroses-----
 */
 # define PHILO_SUCCESS 0
 # define PHILO_FAILURE -1
+/*
+** ------------MAX/MIN--------------------
+*/
+#define FT_MIN(x, y) ((x > y) ? y : x)
+#define FT_MAX(x, y) ((x > y) ? x : y)
 /*
 ** --Enums--
 */

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_init_params.c                                :+:      :+:    :+:   */
+/*   philo_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 21:38:43 by aashara-          #+#    #+#             */
-/*   Updated: 2021/07/17 12:24:07 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/07/22 23:19:05 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,19 +66,19 @@ static int			philo_init_params(int argc, char **argv, int params[PHILO_MAX_NB_AR
 	return (PHILO_SUCCESS);
 }
 
-static int			philo_validate_params(int params[PHILO_MAX_NB_ARGS])
+static int			philo_validate_params(int argc, int params[PHILO_MAX_NB_ARGS])
 {
 	PHILO_ASSERT(params != NULL);
-	if (params[0] < PHILO_MIN_NB_PHILO)
-		PHILO_ERROR("Wrong parameter: %s! Parameter must be not less then %d.\n", PHILO_NB_PHILO, PHILO_MIN_NB_PHILO);
+	if (params[0] < PHILO_MIN_NB_PHILO || params[0] > PHILO_MAX_NB_PHILO)
+		PHILO_ERROR("Wrong parameter! %s must be not less then %d and not greater then %d.\n", PHILO_NB_PHILO, PHILO_MIN_NB_PHILO, PHILO_MAX_NB_PHILO);
 	else if (params[1] < PHILO_MIN_TIME_TO_DIE)
-		PHILO_ERROR("Wrong parameter: %s! Parameter must be not less then %d.\n", PHILO_TIME_TO_DIE, PHILO_MIN_TIME_TO_DIE);
+		PHILO_ERROR("Wrong parameter! %s must be not less then %d ms.\n", PHILO_TIME_TO_DIE, PHILO_MIN_TIME_TO_DIE);
 	else if (params[2] < PHILO_MIN_TIME_TO_EAT)
-		PHILO_ERROR("Wrong parameter: %s! Parameter must be not less then %d.\n", PHILO_TIME_TO_EAT, PHILO_MIN_TIME_TO_EAT);
+		PHILO_ERROR("Wrong parameter! %s must be not less then %d ms.\n", PHILO_TIME_TO_EAT, PHILO_MIN_TIME_TO_EAT);
 	else if (params[3] < PHILO_MIN_TIME_TO_SLEEP)
-		PHILO_ERROR("Wrong parameter: %s! Parameter must be not less then %d.\n", PHILO_TIME_TO_SLEEP, PHILO_MIN_TIME_TO_SLEEP);
-	else if (params[4] < PHILO_MIN_NB_EATINGS)
-		PHILO_ERROR("Wrong parameter: %s! Parameter must be not less then %d.\n", PHILO_NB_EATINGS, PHILO_MIN_NB_EATINGS);
+		PHILO_ERROR("Wrong parameter! %s must be not less then %d ms.\n", PHILO_TIME_TO_SLEEP, PHILO_MIN_TIME_TO_SLEEP);
+	else if (argc == PHILO_MAX_NB_ARGS && params[4] < PHILO_MIN_NB_EATINGS)
+		PHILO_ERROR("Wrong parameter! %s must be not less then %d.\n", PHILO_NB_EATINGS, PHILO_MIN_NB_EATINGS);
 	else
 		return (PHILO_SUCCESS);
 	return (PHILO_FAILURE);
@@ -117,7 +117,7 @@ int					philo_init(int argc, char **argv, t_philo_data *data)
 	PHILO_ASSERT(argv != NULL);
 	memset((void*)data, 0, sizeof(t_philo_data));
 	if (philo_init_params(argc, argv, data->params) == PHILO_FAILURE
-	|| philo_validate_params(data->params) == PHILO_FAILURE)
+	|| philo_validate_params(argc, data->params) == PHILO_FAILURE)
 		PHILO_ERROR_RETURN(PHILO_FAILURE, "\nUsage\n  %s %s %s %s %s [%s]\n", argv[0], PHILO_NB_PHILO,
 		PHILO_TIME_TO_DIE, PHILO_TIME_TO_EAT, PHILO_TIME_TO_SLEEP, PHILO_NB_EATINGS);
 	if (philo_init_data(data) == PHILO_FAILURE)

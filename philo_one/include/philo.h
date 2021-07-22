@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 18:41:58 by aashara-          #+#    #+#             */
-/*   Updated: 2021/07/18 23:43:57 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/07/22 23:17:59 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,21 @@
 /*
 ** -------Params names--------------------
 */
-# define PHILO_NB_PHILO "number_of_philosophers"
-# define PHILO_TIME_TO_DIE "time_to_die"
-# define PHILO_TIME_TO_EAT "time_to_eat"
-# define PHILO_TIME_TO_SLEEP "time_to_sleep"
-# define PHILO_NB_EATINGS "number_of_times_each_philosopher_must_eat"
+# define PHILO_NB_PHILO "Number_of_philosophers"
+# define PHILO_TIME_TO_DIE "Time_to_die"
+# define PHILO_TIME_TO_EAT "Time_to_eat"
+# define PHILO_TIME_TO_SLEEP "Time_to_sleep"
+# define PHILO_NB_EATINGS "Number_of_times_each_philosopher_must_eat"
 /*
 ** -------Limits of params-------------
 */
 # define PHILO_MAX_NB_ARGS 6
 # define PHILO_MIN_NB_PHILO 2
-# define PHILO_MIN_TIME_TO_DIE 1
-# define PHILO_MIN_TIME_TO_EAT 1
-# define PHILO_MIN_TIME_TO_SLEEP 1
-# define PHILO_MIN_NB_EATINGS 0
+# define PHILO_MAX_NB_PHILO 200
+# define PHILO_MIN_TIME_TO_DIE 60
+# define PHILO_MIN_TIME_TO_EAT 60
+# define PHILO_MIN_TIME_TO_SLEEP 60
+# define PHILO_MIN_NB_EATINGS 1
 /*
 ** -------Philozophers actions text-----
 */

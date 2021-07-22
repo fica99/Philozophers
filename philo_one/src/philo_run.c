@@ -63,7 +63,6 @@ void		*philo_run(void *philo_ptr)
 	PHILO_ASSERT(philo_ptr != NULL);
 	philo = philo_ptr;
 	PHILO_ASSERT(philo->data != NULL);
-	philo->last_eat_time = philo->data->start_time;
 	while (philo->data->is_running == Philo_true)
 	{
 		if (philo_eat(philo) == PHILO_FAILURE)
@@ -89,7 +88,6 @@ void			philo_main_thread(t_philo_data *data)
 		while (++i < data->params[0])
 		{
 			PHILO_ASSERT(data->philozophers + i != NULL);
-			PHILO_ASSERT(data->params[1] >= 0);
 			if (data->philozophers[i].last_eat_time + data->params[1] < philo_get_current_time())
 			{
 				philo_print_action(PHILO_DIED, data->philozophers + i);

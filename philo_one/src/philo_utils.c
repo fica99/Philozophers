@@ -31,23 +31,23 @@ int				philo_atoi(const char *str)
 {
 	int						sign;
 	size_t					i;
-	long long				rez;
+	long long				res;
 
 	PHILO_ASSERT(str != NULL);
 	i = 0;
 	while (philo_isspace(str[i]))
 		++i;
 	sign = 1;
-	str += i;
-	i = 0;
 	if (str[i] == '-' || str[i] == '+')
 		if (str[i++] == '-')
 			sign = -1;
-	rez = 0;
-	while (philo_isdigit(str[i]) && i < 12)
-		rez = rez * 10 + str[i++] - '0';
-	rez *= sign;
-	return ((int)rez);
+	str += i;
+	i = 0;
+	res = 0;
+	while (philo_isdigit(str[i]))
+		res = res * 10 + str[i++] - '0';
+	res *= sign;
+	return ((int)res);
 }
 
 unsigned long		philo_get_current_time(void)

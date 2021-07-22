@@ -69,14 +69,14 @@ typedef enum
 /*
 ** --Structures--
 */
-typedef struct				s_philo
+typedef struct			s_philo
 {
-	unsigned int			number;
-	unsigned int			left_fork;
-	unsigned int			right_fork;
-	unsigned long			last_eat_time;
-	unsigned int			number_of_eatings;
-	struct s_philo_data		*data;
+	int					number;
+	int					left_fork;
+	int					right_fork;
+	unsigned long		last_eat_time;
+	int					number_of_eatings;
+	struct s_philo_data	*data;
 }							t_philo;
 
 typedef struct		s_philo_data

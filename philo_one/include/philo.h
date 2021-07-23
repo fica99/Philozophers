@@ -88,6 +88,7 @@ typedef struct		s_philo_data
 	unsigned long	start_time;
 	t_philo_bool	is_running;
 	pthread_mutex_t	mutex_writing;
+	pthread_mutex_t	mutex_eating;
 }					t_philo_data;
 
 /*

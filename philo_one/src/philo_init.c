@@ -98,6 +98,8 @@ static int			philo_init_data(t_philo_data *data)
 		PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot allocate memory\n");
 	if (pthread_mutex_init(&data->mutex_writing, NULL))
 		PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot init mutex writing\n");
+	if (pthread_mutex_init(&data->mutex_eating, NULL))
+		PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot init mutex eating\n");
 	i = -1;
 	while (++i < data->params[0])
 	{

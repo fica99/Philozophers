@@ -27,6 +27,8 @@ void		philo_free_data(t_philo_data *data)
 		free(data->philozophers);
 	if (pthread_mutex_destroy(&data->mutex_writing) != 0)
 		PHILO_ERROR_RETURN(, "Cannot destroy mutex writing\n");
+	if (pthread_mutex_destroy(&data->mutex_eating) != 0)
+		PHILO_ERROR_RETURN(, "Cannot destroy mutex eating\n");
 	i = -1;
 	while (++i < data->params[0])
 	{

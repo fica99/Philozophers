@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 21:38:43 by aashara-          #+#    #+#             */
-/*   Updated: 2021/07/22 23:19:05 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/08/08 21:43:42 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static t_philo_bool	philo_is_valid_arg(const char *str)
 	return (Philo_true);
 }
 
-static int			philo_init_params(int argc, char **argv, int params[PHILO_MAX_NB_ARGS])
+static int			philo_init_params(int argc, char **argv, int *params)
 {
 	int	i;
 

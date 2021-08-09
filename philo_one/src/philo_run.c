@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 22:55:51 by aashara-          #+#    #+#             */
-/*   Updated: 2021/07/22 23:22:00 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/08/09 21:48:06 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,24 @@
 #include "philo_error.h"
 #include "philo.h"
 
-#define MIN_SLEEP_TIME_MILISECS 50
+#define MIN_SLEEP_TIME_MICROSECS 100
 
 static int	philo_smart_sleep(t_philo_bool *is_running, unsigned long sleep_time_ms)
 {
 	int				res;
-	unsigned long	sleep_time_milisecs;
-	unsigned long	sleep_time;
+	unsigned long	start_time;
+	unsigned long	current_time;
 
-	sleep_time_milisecs = sleep_time_ms * 1000;
-	while (sleep_time_milisecs > 0 && *is_running == Philo_true)
+	start_time = philo_get_current_time();
+	current_time = philo_get_current_time();
+	while (sleep_time_ms > (current_time - start_time) && *is_running == Philo_true)
 	{
-		sleep_time = FT_MIN(sleep_time_milisecs, MIN_SLEEP_TIME_MILISECS);
-		if((res = usleep(sleep_time)) != 0)
+		if((res = usleep(MIN_SLEEP_TIME_MICROSECS)) != 0)
 			PHILO_ERROR("Error in usleep");
 		PHILO_ASSERT(res == 0);
 		if (res != 0)
 			return (PHILO_FAILURE);
-		sleep_time_milisecs -= sleep_time;
+		current_time = philo_get_current_time();
 	}
 	return (PHILO_SUCCESS);
 }

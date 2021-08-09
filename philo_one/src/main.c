@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 18:49:22 by aashara-          #+#    #+#             */
-/*   Updated: 2021/07/22 23:03:57 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/08/09 20:57:27 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ static int	philo_run_threads(t_philo_data *data)
 	while (++i < data->params[0])
 	{
 		PHILO_ASSERT(data->philozophers + i != NULL);
+		data->philozophers[i].last_eat_time = philo_get_current_time();
 		if (pthread_create(threads + i, NULL, philo_run, (void*)(data->philozophers + i)) != 0)
 			PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot create thread %d\n", i);
-		data->philozophers[i].last_eat_time = philo_get_current_time();
 	}
 	philo_main_thread(data);
 	i = -1;

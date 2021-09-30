@@ -16,7 +16,7 @@ NAME	:=	 	philo_one
 # ------------  DIRECTORIES  ------------------------------------------------- #
 SRC_DIR	=		src
 HDR_DIR	=		include
-OBJ_DIR	=		int
+TMP_DIR =		tmp
 
 # ------------  SOURCE FILES  ------------------------------------------------ #
 PRE_FLS	=		philo_precomp.c\
@@ -30,7 +30,7 @@ SRC_FLS	=		$(PRE_FLS) \
 
 # ------------  FILEPATHS  --------------------------------------------------- #
 SRCS	=		$(addprefix $(SRC_DIR)/, $(SRC_FLS))
-OBJS	=		$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o, $(SRCS))
+OBJS	=		$(patsubst $(SRC_DIR)/%.c,$(TMP_DIR)/%.o, $(SRCS))
 DEPS	=		$(OBJS:.o=.d)
 
 # ------------  FLAGS  ------------------------------------------------------- #
@@ -49,17 +49,17 @@ LFLGS	=		-lpthread
 all: $(NAME)
 
 -include $(DEPS)
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+$(TMP_DIR)/%.o: $(SRC_DIR)/%.c | $(TMP_DIR)
 	$(CC) $(DFLGS) $(EFLGS) $(CFLGS) $(DFLGS) -c -o $@ $< $(IFLGS)
 
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+$(TMP_DIR):
+	mkdir -p $(TMP_DIR)
 
 $(NAME): $(OBJS)
 	$(CC) -o $(NAME) $(OBJS) $(LFLGS)
 
 clean:
-	$(RM) $(OBJ_DIR)
+	$(RM) $(TMP_DIR)
 
 fclean: clean
 	$(RM) $(NAME)

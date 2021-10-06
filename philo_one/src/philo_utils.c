@@ -14,6 +14,8 @@
 #include "philo_error.h"
 #include "philo.h"
 
+#define MAX_INT_LENGTH 10
+
 t_philo_bool	philo_isspace(int c)
 {
 	if (c == ' ' || c == '\f' || c == '\n' || c == '\r' || c == '\t' ||
@@ -25,6 +27,33 @@ t_philo_bool	philo_isspace(int c)
 t_philo_bool	philo_isdigit(int c)
 {
 	return (c >= '0' && c <= '9');
+}
+
+t_philo_bool	philo_is_int(const char *str)
+{
+	int						sign;
+	size_t					i;
+	long long				res;
+
+	PHILO_ASSERT(str != NULL);
+	i = 0;
+	while (philo_isspace(str[i]))
+		++i;
+	sign = 1;
+	if (str[i] == '-' || str[i] == '+')
+		if (str[i++] == '-')
+			sign = -1;
+	str += i;
+	i = 0;
+	res = 0;
+	while (philo_isdigit(str[i]) && i < MAX_INT_LENGTH)
+		res = res * 10 + str[i++] - '0';
+	res *= sign;
+	if (res > INT_MAX || res < INT_MIN)
+		return (Philo_false);
+	while (philo_isspace(str[i]))
+		++i;
+	return ((t_philo_bool)(str[i] == '\0'));
 }
 
 int				philo_atoi(const char *str)
@@ -50,27 +79,11 @@ int				philo_atoi(const char *str)
 	return ((int)res);
 }
 
-unsigned long		philo_get_current_time(void)
-{
-	struct timeval	tv;
-	unsigned long	i;
-	int				res;
-
-	if ((res = gettimeofday(&tv, NULL)) != 0)
-		PHILO_ERROR("Error in gettimeofday");
-	PHILO_ASSERT(res == 0);
-	i = tv.tv_sec * 1000 + tv.tv_usec / 1000;
-	return (i);
-}
-
 void			philo_print_action(t_philo_actions action, t_philo *philo)
 {
 	unsigned long			time_from_start;
 	char					*text;
 
-	PHILO_ASSERT(philo != NULL);
-	PHILO_ASSERT(philo->data != NULL);
-	time_from_start = philo_get_current_time() - philo->data->start_time;
 	text = "";
 	if (action == PHILO_EATING)
 		text = PHILO_EATING_TEXT;
@@ -83,7 +96,10 @@ void			philo_print_action(t_philo_actions action, t_philo *philo)
 	else if (action == PHILO_DIED)
 		text = PHILO_DIED_TEXT;
 	PHILO_LOCK(&philo->data->mutex_writing);
+	time_from_start = philo_elapsed_time();
 	if (philo->data->is_running)
-		printf("%-10lu %d %s\n", time_from_start, philo->number, text);
+		printf("%-10lu %d %s\n", time_from_start, philo->id, text);
+	if (action == PHILO_DIED)
+		philo->data->is_running = Philo_false;
 	PHILO_UNLOCK(&philo->data->mutex_writing);
 }

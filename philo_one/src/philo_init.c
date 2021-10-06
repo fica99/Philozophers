@@ -14,51 +14,17 @@
 #include "philo_error.h"
 #include "philo.h"
 
-#define MAX_INT_LENGTH 10
-
-static t_philo_bool	philo_is_valid_arg(const char *str)
-{
-	int						sign;
-	size_t					i;
-	long long				res;
-
-	PHILO_ASSERT(str != NULL);
-	i = 0;
-	while (philo_isspace(str[i]))
-		++i;
-	sign = 1;
-	if (str[i] == '-' || str[i] == '+')
-		if (str[i++] == '-')
-			sign = -1;
-	str += i;
-	i = 0;
-	res = 0;
-	while (philo_isdigit(str[i]) && i < MAX_INT_LENGTH)
-		res = res * 10 + str[i++] - '0';
-	res *= sign;
-	if (res > INT_MAX || res < INT_MIN)
-		return (Philo_false);
-	while (philo_isspace(str[i]))
-		++i;
-	if (str[i] != '\0')
-		return (Philo_false);
-	return (Philo_true);
-}
-
 static int			philo_init_params(int argc, char **argv, int *params)
 {
 	int	i;
 
-	PHILO_ASSERT(params != NULL);
-	PHILO_ASSERT(argv != NULL);
 	if (argc != PHILO_MAX_NB_ARGS - 1 && argc != PHILO_MAX_NB_ARGS)
 		PHILO_ERROR_RETURN(PHILO_FAILURE, "Invalid number of arguments\n");
 	memset((void*)params, 0, sizeof(int) * PHILO_MAX_NB_ARGS);
 	i = 0;
 	while (++i < argc)
 	{
-		PHILO_ASSERT(argv[i] != NULL);
-		if (philo_is_valid_arg(argv[i]) == Philo_true)
+		if (philo_is_int(argv[i]) == Philo_true)
 			params[i - 1] = philo_atoi(argv[i]);
 		else
 			PHILO_ERROR_RETURN(PHILO_FAILURE, "Invalid argument: %s\n", argv[i]);
@@ -66,9 +32,8 @@ static int			philo_init_params(int argc, char **argv, int *params)
 	return (PHILO_SUCCESS);
 }
 
-static int			philo_validate_params(int argc, int params[PHILO_MAX_NB_ARGS])
+static int			philo_validate_params(int argc, int *params)
 {
-	PHILO_ASSERT(params != NULL);
 	if (params[0] < PHILO_MIN_NB_PHILO || params[0] > PHILO_MAX_NB_PHILO)
 		PHILO_ERROR("Wrong parameter! %s must be not less then %d and not greater then %d.\n", PHILO_NB_PHILO, PHILO_MIN_NB_PHILO, PHILO_MAX_NB_PHILO);
 	else if (params[1] < PHILO_MIN_TIME_TO_DIE)
@@ -89,8 +54,6 @@ static int			philo_init_data(t_philo_data *data)
 {
 	int	i;
 
-	PHILO_ASSERT(data != NULL);
-	PHILO_ASSERT(data->params != NULL);
 	if (!(data->philozophers = (t_philo*)malloc(sizeof(t_philo) *
 				data->params[0])) ||
 		!(data->forks = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t) *
@@ -98,15 +61,13 @@ static int			philo_init_data(t_philo_data *data)
 		PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot allocate memory\n");
 	if (pthread_mutex_init(&data->mutex_writing, NULL))
 		PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot init mutex writing\n");
-	if (pthread_mutex_init(&data->mutex_eating, NULL))
-		PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot init mutex eating\n");
 	i = -1;
 	while (++i < data->params[0])
 	{
-		data->philozophers[i].number = i + 1;
+		data->philozophers[i].id = i + 1;
 		data->philozophers[i].data = data;
-		data->philozophers[i].left_fork = i;
-		data->philozophers[i].right_fork = (i + 1) % data->params[0];
+		if (pthread_mutex_init(&data->philozophers[i].mutex_eating, NULL))
+			PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot init mutex eating\n");
 		if (pthread_mutex_init(data->forks + i, NULL))
 			PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot init mutexes for forks\n");
 	}
@@ -115,8 +76,6 @@ static int			philo_init_data(t_philo_data *data)
 
 int					philo_init(int argc, char **argv, t_philo_data *data)
 {
-	PHILO_ASSERT(data != NULL);
-	PHILO_ASSERT(argv != NULL);
 	memset((void*)data, 0, sizeof(t_philo_data));
 	if (philo_init_params(argc, argv, data->params) == PHILO_FAILURE
 	|| philo_validate_params(argc, data->params) == PHILO_FAILURE)

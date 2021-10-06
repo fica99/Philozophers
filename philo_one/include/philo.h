@@ -72,35 +72,38 @@ typedef enum
 */
 typedef struct			s_philo
 {
-	int					number;
-	int					left_fork;
-	int					right_fork;
+	int					id;
 	unsigned long		last_eat_time;
 	int					number_of_eatings;
 	struct s_philo_data	*data;
-}							t_philo;
+	pthread_mutex_t		mutex_eating;
+}						t_philo;
 
 typedef struct		s_philo_data
 {
 	int				params[PHILO_MAX_NB_ARGS];
 	t_philo			*philozophers;
 	pthread_mutex_t	*forks;
-	unsigned long	start_time;
 	t_philo_bool	is_running;
 	pthread_mutex_t	mutex_writing;
-	pthread_mutex_t	mutex_eating;
 }					t_philo_data;
 
 /*
 ** --Functions--
 */
 /*
+** ------------philo_time.c------------------
+*/
+unsigned long	philo_get_current_time(void);
+unsigned long	philo_elapsed_time(void);
+int				philo_smart_sleep(t_philo_bool *is_running, unsigned long sleep_time_ms);
+/*
 ** ------------philo_utils.c------------------
 */
 t_philo_bool	philo_isspace(int c);
 t_philo_bool	philo_isdigit(int c);
+t_philo_bool	philo_is_int(const char *str);
 int				philo_atoi(const char *str);
-unsigned long	philo_get_current_time(void);
 void			philo_print_action(t_philo_actions action, t_philo *philo);
 /*
 ** ------------philo_init.c------------
@@ -109,8 +112,7 @@ int				philo_init(int argc, char **argv, t_philo_data *data);
 /*
 ** ------------philo_run.c---------------------
 */
-void			*philo_run(void *philo);
-void			philo_main_thread(t_philo_data *data);
+int				philo_run_threads(t_philo_data *data);
 /*
 ** ------------main.c--------------------------
 */

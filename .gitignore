@@ -1,4 +1,5 @@
 .devcontainer/
+.vscode/
 philo_one/philo_one
 # Prerequisites
 *.d

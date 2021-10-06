@@ -60,8 +60,8 @@
 /*
 ** ------------MAX/MIN--------------------
 */
-#define FT_MIN(x, y) ((x > y) ? y : x)
-#define FT_MAX(x, y) ((x > y) ? x : y)
+#define FT_MIN(x, y) (((x) > (y)) ? (y) : (x))
+#define FT_MAX(x, y) (((x) > (y)) ? (x) : (y))
 /*
 ** --Enums--
 */

@@ -16,7 +16,6 @@
 /*
 ** --System headers--
 */
-#ifdef PHILO_ENABLE_ASSERTS
 /*
 ** ------------assert----------------------
 */
@@ -27,6 +26,7 @@
 /*
 ** ------------Assert macroses-----
 */
+#ifdef PHILO_ENABLE_ASSERTS
 # define PHILO_ASSERT(x) assert(x)
 #else
 # define PHILO_ASSERT(x) ((void)0)

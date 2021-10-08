@@ -16,19 +16,8 @@
 
 void		philo_free_data(t_philo_data *data)
 {
-	int	i;
-
-	if (pthread_mutex_destroy(&data->mutex_writing) != 0)
-		PHILO_ERROR_RETURN(, "Cannot destroy mutex writing\n");
-	i = -1;
-	while (++i < data->params[0])
-	{
-		PHILO_ASSERT(data->forks + i != NULL);
-		if (pthread_mutex_destroy(data->forks + i) != 0)
-			PHILO_ERROR_RETURN(, "Cannot destroy forkes mutexes\n");
-		if (pthread_mutex_destroy(&data->philozophers[i].mutex_eating) != 0)
-			PHILO_ERROR_RETURN(, "Cannot destroy mutex eating\n");
-	}
+	if ((sem_close(PHILO_SEMAPHORE_WRITE) != 0)
+		PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot close writing semaphore\n");
 	if (data->philozophers != NULL)
 		free(data->philozophers);
 	if (data->forks != NULL)

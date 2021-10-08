@@ -35,10 +35,15 @@
 */
 # include <string.h>
 /*
-** ------------pthread_mutex_init---------
+** ------------sem_open-------------------
+** ------------sem_close------------------
+*/
+# include <fcntl.h>           /* For O_* constants */
+# include <sys/stat.h>        /* For mode constants */
+# include <semaphore.h>
+/*
 ** ------------pthread_create-------------
-** ------------pthread_detach-------------
-** ------------pthread_mutex_lock---------
+** ------------pthread_join---------------
 */
 # include <pthread.h>
 /*
@@ -47,6 +52,7 @@
 # include <sys/time.h>
 /*
 ** ------------usleep----------------------
+** ------------fork------------------------
 */
 # include <unistd.h>
 /*

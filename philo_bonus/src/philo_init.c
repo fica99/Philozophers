@@ -14,6 +14,8 @@
 #include "philo_error.h"
 #include "philo.h"
 
+# define PHILO_SEMAPHORE_WRITE "PhiloSemaphoreWrite"
+
 static int			philo_init_params(int argc, char **argv, int *params)
 {
 	int	i;
@@ -49,27 +51,26 @@ static int			philo_validate_params(int argc, int *params)
 	return (PHILO_FAILURE);
 }
 
+static int			philo_init_semaphores(t_philo_data *data)
+{
+	if ((data->sem_writing = sem_open(PHILO_SEMAPHORE_WRITE, O_CREAT | O_EXCL, S_IRGRP | S_IWGRP, 1)) == SEM_FAILED)
+		PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot open writing semaphore\n");
+	if ((sem_unlink(PHILO_SEMAPHORE_WRITE) != 0)
+		PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot unlink writing semaphore\n");
+}
 
 static int			philo_init_data(t_philo_data *data)
 {
 	int	i;
 
-	if (!(data->philozophers = (t_philo*)malloc(sizeof(t_philo) *
-				data->params[0])) ||
-		!(data->forks = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t) *
-				data->params[0])))
+	if (!(data->philozophers = (t_philo*)malloc(sizeof(t_philo) * data->params[0])))
 		PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot allocate memory\n");
-	if (pthread_mutex_init(&data->mutex_writing, NULL))
-		PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot init mutex writing\n");
 	i = -1;
 	while (++i < data->params[0])
 	{
+		memset((void*)(data->philozophers + i), 0, sizeof(t_philo));
 		data->philozophers[i].id = i + 1;
 		data->philozophers[i].data = data;
-		if (pthread_mutex_init(&data->philozophers[i].mutex_eating, NULL))
-			PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot init mutex eating\n");
-		if (pthread_mutex_init(data->forks + i, NULL))
-			PHILO_ERROR_RETURN(PHILO_FAILURE, "Cannot init mutexes for forks\n");
 	}
 	return (PHILO_SUCCESS);
 }

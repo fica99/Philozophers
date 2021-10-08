@@ -43,15 +43,15 @@
 # define PHILO_THINKING_TEXT "is thinking"
 # define PHILO_DIED_TEXT "died"
 /*
-** -------Mutex lock/unlock-------------
+** -------Semaphore wait/post-------------
 */
-# define PHILO_LOCK(mutex) {                            \
-	if (pthread_mutex_lock(mutex) != 0)                 \
-		PHILO_ERROR("Error in pthread_mutex_lock\n");   \
+# define PHILO_SEM_WAIT(sem) {                            \
+	if (sem_wait(sem) != 0)                 \
+		PHILO_ERROR("Error in sem_wait\n");   \
 }
-# define PHILO_UNLOCK(mutex) {                          \
-	if (pthread_mutex_unlock(mutex) != 0)               \
-		PHILO_ERROR("Error in pthread_mutex_unlock\n"); \
+# define PHILO_SEM_POST(sem) {                          \
+	if (sem_post(sem) != 0)               \
+		PHILO_ERROR("Error in sem_post\n"); \
 }
 /*
 ** --Enums--
@@ -73,19 +73,18 @@ typedef enum
 typedef struct			s_philo
 {
 	int					id;
+	pid_t				pid;
 	unsigned long		last_eat_time;
 	int					number_of_eatings;
 	struct s_philo_data	*data;
-	pthread_mutex_t		mutex_eating;
 }						t_philo;
 
 typedef struct		s_philo_data
 {
 	int				params[PHILO_MAX_NB_ARGS];
 	t_philo			*philozophers;
-	pthread_mutex_t	*forks;
 	t_philo_bool	is_running;
-	pthread_mutex_t	mutex_writing;
+	sem_t			*sem_writing;
 }					t_philo_data;
 
 /*

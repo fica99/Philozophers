@@ -45,11 +45,11 @@
 /*
 ** -------Mutex lock/unlock-------------
 */
-# define PHILO_LOCK(mutex) {                            \
+# define PHILO_MUTEX_LOCK(mutex) {                            \
 	if (pthread_mutex_lock(mutex) != 0)                 \
 		PHILO_ERROR("Error in pthread_mutex_lock\n");   \
 }
-# define PHILO_UNLOCK(mutex) {                          \
+# define PHILO_MUTEX_UNLOCK(mutex) {                          \
 	if (pthread_mutex_unlock(mutex) != 0)               \
 		PHILO_ERROR("Error in pthread_mutex_unlock\n"); \
 }

@@ -24,20 +24,20 @@ static int	philo_eat(t_philo *philo)
 
 	min = FT_MIN(philo->id - 1, philo->data->params[0] <= philo->id ? 0 : philo->id);
 	PHILO_ASSERT(philo->data->forks + min ! NULL);
-	PHILO_LOCK(philo->data->forks + min);
+	PHILO_MUTEX_LOCK(philo->data->forks + min);
 	philo_print_action(PHILO_TAKE_FORK, philo);
 	max = FT_MAX(philo->id - 1, philo->data->params[0] <= philo->id ? 0 : philo->id);
 	PHILO_ASSERT(philo->data->forks + max ! NULL);
-	PHILO_LOCK(philo->data->forks + max);
+	PHILO_MUTEX_LOCK(philo->data->forks + max);
 	philo_print_action(PHILO_TAKE_FORK, philo);
-	PHILO_LOCK(&philo->mutex_eating);
+	PHILO_MUTEX_LOCK(&philo->mutex_eating);
 	philo->last_eat_time = philo_elapsed_time();
 	++philo->number_of_eatings;
 	philo_print_action(PHILO_EATING, philo);
 	res = philo_smart_sleep(&philo->data->is_running, philo->data->params[2]);
-	PHILO_UNLOCK(&philo->mutex_eating);
-	PHILO_UNLOCK(philo->data->forks + max);
-	PHILO_UNLOCK(philo->data->forks + min);
+	PHILO_MUTEX_UNLOCK(&philo->mutex_eating);
+	PHILO_MUTEX_UNLOCK(philo->data->forks + max);
+	PHILO_MUTEX_UNLOCK(philo->data->forks + min);
 	return (res);
 }
 
@@ -71,14 +71,14 @@ static void	philo_monitor(t_philo_data *data)
 		while (++i < data->params[0])
 		{
 			PHILO_ASSERT(data->philozophers + i != NULL);
-			PHILO_LOCK(&data->philozophers[i].mutex_eating);
+			PHILO_MUTEX_LOCK(&data->philozophers[i].mutex_eating);
 			if (data->philozophers[i].last_eat_time + data->params[1] < philo_elapsed_time())
 			{
 				philo_print_action(PHILO_DIED, data->philozophers + i);
-				PHILO_UNLOCK(&data->philozophers[i].mutex_eating);
+				PHILO_MUTEX_UNLOCK(&data->philozophers[i].mutex_eating);
 				return ;
 			}
-			PHILO_UNLOCK(&data->philozophers[i].mutex_eating);
+			PHILO_MUTEX_UNLOCK(&data->philozophers[i].mutex_eating);
 			if (data->params[4] == 0 ||
 				data->philozophers[i].number_of_eatings < data->params[4])
 				is_eated = Philo_false;

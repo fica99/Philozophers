@@ -64,6 +64,7 @@ static int			philo_init_data(t_philo_data *data)
 	i = -1;
 	while (++i < data->params[0])
 	{
+		memset((void*)(data->philozophers + i), 0, sizeof(t_philo));
 		data->philozophers[i].id = i + 1;
 		data->philozophers[i].data = data;
 		if (pthread_mutex_init(&data->philozophers[i].mutex_eating, NULL))

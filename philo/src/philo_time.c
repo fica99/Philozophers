@@ -55,5 +55,7 @@ int					philo_smart_sleep(t_philo_bool *is_running, unsigned long sleep_time_ms)
 			return (PHILO_FAILURE);
 		current_time = philo_elapsed_time();
 	}
+	if (*is_running == Philo_false)
+		return (PHILO_FAILURE);
 	return (PHILO_SUCCESS);
 }

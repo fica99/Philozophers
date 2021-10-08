@@ -37,7 +37,7 @@
 /*
 ** ------------pthread_mutex_init---------
 ** ------------pthread_create-------------
-** ------------pthread_detach-------------
+** ------------pthread_join---------------
 ** ------------pthread_mutex_lock---------
 */
 # include <pthread.h>

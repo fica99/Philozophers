@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 18:41:58 by aashara-          #+#    #+#             */
-/*   Updated: 2021/10/10 17:33:26 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/10/10 18:17:18 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,14 @@ typedef struct s_philo
 	pthread_t			tid;
 	int					id;
 	unsigned long		last_eat_time;
-	int					number_of_eatings;
+	int					nb_eat;
 	struct s_philo_data	*data;
 	pthread_mutex_t		mutex_eating;
 }						t_philo;
 
 typedef struct s_philo_data
 {
-	int				params[PHILO_MAX_NB_ARGS];
+	int				par[PHILO_MAX_NB_ARGS];
 	t_philo			*philozophers;
 	pthread_mutex_t	*forks;
 	t_philo_bool	is_running;

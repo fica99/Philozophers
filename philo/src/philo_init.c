@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 21:38:43 by aashara-          #+#    #+#             */
-/*   Updated: 2021/10/10 17:26:50 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/10/10 18:17:05 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ static int	philo_init_data(t_philo_data *data)
 {
 	int	i;
 
-	data->philozophers = (t_philo *)malloc(sizeof(t_philo) * data->params[0]);
+	data->philozophers = (t_philo *)malloc(sizeof(t_philo) * data->par[0]);
 	data->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t)
-			* data->params[0]);
+			* data->par[0]);
 	if (!data->philozophers || !data->forks)
 	{
 		fprintf(stderr, "Cannot allocate memory\n");
@@ -75,7 +75,7 @@ static int	philo_init_data(t_philo_data *data)
 		|| philo_mutex_init(&data->mutex_is_running) != PHILO_SUCCESS)
 		return (PHILO_FAILURE);
 	i = -1;
-	while (++i < data->params[0])
+	while (++i < data->par[0])
 	{
 		memset((void *)(data->philozophers + i), 0, sizeof(t_philo));
 		data->philozophers[i].id = i + 1;
@@ -91,8 +91,8 @@ static int	philo_init_data(t_philo_data *data)
 int	philo_init(int argc, char **argv, t_philo_data *data)
 {
 	memset((void *)data, 0, sizeof(t_philo_data));
-	if (philo_init_params(argc, argv, data->params) == PHILO_FAILURE
-		|| philo_validate_params(argc, data->params) == PHILO_FAILURE)
+	if (philo_init_params(argc, argv, data->par) == PHILO_FAILURE
+		|| philo_validate_params(argc, data->par) == PHILO_FAILURE)
 	{
 		fprintf(stderr, "\nUsage\n  %s %s %s %s %s [%s]\n", argv[0],
 			PHILO_NB_PHILO, PHILO_TIME_TO_DIE, PHILO_TIME_TO_EAT,

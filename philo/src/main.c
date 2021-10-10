@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 18:49:22 by aashara-          #+#    #+#             */
-/*   Updated: 2021/10/10 16:26:24 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/10/10 18:16:57 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	philo_free_data(t_philo_data *data)
 		|| philo_mutex_destroy(&data->mutex_is_running) != PHILO_SUCCESS)
 		return ;
 	i = -1;
-	while (++i < data->params[0])
+	while (++i < data->par[0])
 	{
 		if (philo_mutex_destroy(data->forks + i) != PHILO_SUCCESS
 			|| philo_mutex_destroy(&data->philozophers[i].mutex_eating)

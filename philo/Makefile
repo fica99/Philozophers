@@ -6,7 +6,7 @@
 #    By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/23 18:46:40 by aashara-          #+#    #+#              #
-#    Updated: 2021/10/10 17:27:25 by aashara-         ###   ########.fr        #
+#    Updated: 2021/10/10 18:17:43 by aashara-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ DEPS	=		$(OBJS:.o=.d)
 CC		=		gcc
 RM		=		rm -rf
 CFLGS	=		-Wall -Werror -Wextra
-DFLGS	=		-O0 -g
+DFLGS	=		-O2
 EFLGS	=		
 IFLGS	=		-I $(HDR_DIR)
 DFLGS	=		-MMD -MP

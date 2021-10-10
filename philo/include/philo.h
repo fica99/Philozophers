@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 18:41:58 by aashara-          #+#    #+#             */
-/*   Updated: 2021/10/10 14:21:39 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/10/10 17:33:26 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,35 +43,25 @@
 # define PHILO_THINKING_TEXT "is thinking"
 # define PHILO_DIED_TEXT "died"
 /*
-** -------Mutex lock/unlock-------------
-*/
-# define PHILO_MUTEX_LOCK(mutex) {                            \
-	if (pthread_mutex_lock(mutex) != 0)                 \
-		PHILO_ERROR("Error in pthread_mutex_lock\n");   \
-}
-# define PHILO_MUTEX_UNLOCK(mutex) {                          \
-	if (pthread_mutex_unlock(mutex) != 0)               \
-		PHILO_ERROR("Error in pthread_mutex_unlock\n"); \
-}
-/*
 ** --Enums--
 */
 /*
 ** -------Philozophers actions----------
 */
-typedef enum
+typedef enum e_philo_actions
 {
 	PHILO_TAKE_FORK,
 	PHILO_EATING,
 	PHILO_SLEEPING,
 	PHILO_THINKING,
 	PHILO_DIED
-}	t_philo_actions;
+}				t_philo_actions;
 /*
 ** --Structures--
 */
-typedef struct			s_philo
+typedef struct s_philo
 {
+	pthread_t			tid;
 	int					id;
 	unsigned long		last_eat_time;
 	int					number_of_eatings;
@@ -79,7 +69,7 @@ typedef struct			s_philo
 	pthread_mutex_t		mutex_eating;
 }						t_philo;
 
-typedef struct		s_philo_data
+typedef struct s_philo_data
 {
 	int				params[PHILO_MAX_NB_ARGS];
 	t_philo			*philozophers;
@@ -97,7 +87,8 @@ typedef struct		s_philo_data
 */
 unsigned long	philo_get_current_time(void);
 unsigned long	philo_elapsed_time(void);
-int				philo_smart_sleep(t_philo_data *data, unsigned long sleep_time_ms);
+int				philo_smart_sleep(t_philo_data *data,
+					unsigned long sleep_time_ms);
 /*
 ** ------------philo_utils.c------------------
 */
@@ -118,6 +109,14 @@ int				philo_run_threads(t_philo_data *data);
 ** ------------main.c--------------------------
 */
 t_philo_bool	philo_is_running(t_philo_data *data);
-void			philo_set_is_running(t_philo_data *data, t_philo_bool is_running);
+void			philo_set_is_running(t_philo_data *data,
+					t_philo_bool is_running);
 void			philo_free_data(t_philo_data *data);
+/*
+** ------------philo_mutex.c--------------------------
+*/
+int				philo_mutex_destroy(pthread_mutex_t *mutex);
+int				philo_mutex_init(pthread_mutex_t *mutex);
+int				philo_mutex_lock(pthread_mutex_t *mutex);
+int				philo_mutex_unlock(pthread_mutex_t *mutex);
 #endif

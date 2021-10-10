@@ -6,49 +6,44 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 18:49:22 by aashara-          #+#    #+#             */
-/*   Updated: 2021/10/10 14:21:12 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/10/10 16:26:24 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_precomp.h"
-#include "philo_error.h"
 #include "philo.h"
 
 t_philo_bool	philo_is_running(t_philo_data *data)
 {
 	t_philo_bool	is_running;
 
-	PHILO_ASSERT(data != NULL);
-	PHILO_MUTEX_LOCK(&data->mutex_is_running);
+	philo_mutex_lock(&data->mutex_is_running);
 	is_running = data->is_running;
-	PHILO_MUTEX_UNLOCK(&data->mutex_is_running);
+	philo_mutex_unlock(&data->mutex_is_running);
 	return (is_running);
 }
 
-void		philo_set_is_running(t_philo_data *data, t_philo_bool is_running)
+void	philo_set_is_running(t_philo_data *data, t_philo_bool is_running)
 {
-	PHILO_ASSERT(data != NULL);
-	PHILO_MUTEX_LOCK(&data->mutex_is_running);
+	philo_mutex_lock(&data->mutex_is_running);
 	data->is_running = is_running;
-	PHILO_MUTEX_UNLOCK(&data->mutex_is_running);
+	philo_mutex_unlock(&data->mutex_is_running);
 }
 
-void		philo_free_data(t_philo_data *data)
+void	philo_free_data(t_philo_data *data)
 {
 	int	i;
 
-	if (pthread_mutex_destroy(&data->mutex_writing) != 0)
-		PHILO_ERROR_RETURN(, "Cannot destroy mutex writing\n");
-	if (pthread_mutex_destroy(&data->mutex_is_running) != 0)
-		PHILO_ERROR_RETURN(, "Cannot destroy mutex is running\n");
+	if (philo_mutex_destroy(&data->mutex_writing) != PHILO_SUCCESS
+		|| philo_mutex_destroy(&data->mutex_is_running) != PHILO_SUCCESS)
+		return ;
 	i = -1;
 	while (++i < data->params[0])
 	{
-		PHILO_ASSERT(data->forks + i != NULL);
-		if (pthread_mutex_destroy(data->forks + i) != 0)
-			PHILO_ERROR_RETURN(, "Cannot destroy forkes mutexes\n");
-		if (pthread_mutex_destroy(&data->philozophers[i].mutex_eating) != 0)
-			PHILO_ERROR_RETURN(, "Cannot destroy mutex eating\n");
+		if (philo_mutex_destroy(data->forks + i) != PHILO_SUCCESS
+			|| philo_mutex_destroy(&data->philozophers[i].mutex_eating)
+			!= PHILO_SUCCESS)
+			return ;
 	}
 	if (data->philozophers != NULL)
 		free(data->philozophers);
@@ -56,7 +51,7 @@ void		philo_free_data(t_philo_data *data)
 		free(data->forks);
 }
 
-int			main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_philo_data	data;
 	int				res;

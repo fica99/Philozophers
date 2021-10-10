@@ -6,20 +6,19 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 20:20:04 by aashara-          #+#    #+#             */
-/*   Updated: 2021/10/10 14:16:53 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/10/10 16:35:19 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_precomp.h"
-#include "philo_error.h"
 #include "philo.h"
 
 #define MAX_INT_LENGTH 10
 
 t_philo_bool	philo_isspace(int c)
 {
-	if (c == ' ' || c == '\f' || c == '\n' || c == '\r' || c == '\t' ||
-	c == '\v')
+	if (c == ' ' || c == '\f' || c == '\n' || c == '\r' || c == '\t'
+		|| c == '\v')
 		return (Philo_true);
 	return (Philo_false);
 }
@@ -35,7 +34,6 @@ t_philo_bool	philo_is_int(const char *str)
 	size_t					i;
 	long long				res;
 
-	PHILO_ASSERT(str != NULL);
 	i = 0;
 	while (philo_isspace(str[i]))
 		++i;
@@ -56,13 +54,12 @@ t_philo_bool	philo_is_int(const char *str)
 	return ((t_philo_bool)(str[i] == '\0'));
 }
 
-int				philo_atoi(const char *str)
+int	philo_atoi(const char *str)
 {
 	int						sign;
 	size_t					i;
 	long long				res;
 
-	PHILO_ASSERT(str != NULL);
 	i = 0;
 	while (philo_isspace(str[i]))
 		++i;
@@ -79,7 +76,7 @@ int				philo_atoi(const char *str)
 	return ((int)res);
 }
 
-void			philo_print_action(t_philo_actions action, t_philo *philo)
+void	philo_print_action(t_philo_actions action, t_philo *philo)
 {
 	unsigned long			time_from_start;
 	char					*text;
@@ -95,11 +92,11 @@ void			philo_print_action(t_philo_actions action, t_philo *philo)
 		text = PHILO_TAKE_FORK_TEXT;
 	else if (action == PHILO_DIED)
 		text = PHILO_DIED_TEXT;
-	PHILO_MUTEX_LOCK(&philo->data->mutex_writing);
+	philo_mutex_lock(&philo->data->mutex_writing);
 	time_from_start = philo_elapsed_time();
 	if (philo_is_running(philo->data))
 		printf("%-10lu %d %s\n", time_from_start, philo->id, text);
 	if (action == PHILO_DIED)
 		philo_set_is_running(philo->data, Philo_false);
-	PHILO_MUTEX_UNLOCK(&philo->data->mutex_writing);
+	philo_mutex_unlock(&philo->data->mutex_writing);
 }

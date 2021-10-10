@@ -6,7 +6,7 @@
 #    By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/23 18:46:40 by aashara-          #+#    #+#              #
-#    Updated: 2021/10/10 14:33:51 by aashara-         ###   ########.fr        #
+#    Updated: 2021/10/10 17:27:25 by aashara-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,6 @@ TMP_DIR =		tmp
 
 # ------------  SOURCE FILES  ------------------------------------------------ #
 PRE_FLS	=		philo_precomp.c\
-				philo_error.c
 
 SRC_FLS	=		$(PRE_FLS) \
 				main.c \
@@ -28,6 +27,7 @@ SRC_FLS	=		$(PRE_FLS) \
 				philo_init.c \
 				philo_run.c \
 				philo_time.c \
+				philo_mutex.c
 
 # ------------  FILEPATHS  --------------------------------------------------- #
 SRCS	=		$(addprefix $(SRC_DIR)/, $(SRC_FLS))
@@ -38,8 +38,8 @@ DEPS	=		$(OBJS:.o=.d)
 CC		=		gcc
 RM		=		rm -rf
 CFLGS	=		-Wall -Werror -Wextra
-DFLGS	=		-DPHILO_ENABLE_ASSERTS -O0 -g
-EFLGS	=		-DPHILO_ENABLE_ERRORS
+DFLGS	=		-O0 -g
+EFLGS	=		
 IFLGS	=		-I $(HDR_DIR)
 DFLGS	=		-MMD -MP
 LFLGS	=		-lpthread

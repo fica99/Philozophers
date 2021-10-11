@@ -88,24 +88,27 @@ static void	philo_monitor(t_philo_data *data)
 
 int	philo_run_threads(t_philo_data *data)
 {
-	int				i;
+	int		i;
+	pid_t	pid;	
 
-	philo_set_is_running(data, Philo_true);
 	i = -1;
 	while (++i < data->par[0])
 	{
-		if (pthread_create(&(data->philozophers[i].tid), NULL, philo_run,
-				(void*)(data->philozophers + i)) != 0)
+		pid = fork();
+		if (pid == PHILO_FAILURE)
 		{
-			fprintf(stderr, "Cannot create thread %d\n", i);
+			fprintf(stderr, "Cannot create process %d\n", i);
 			return (PHILO_FAILURE);
 		}
-		if (usleep(PHILO_THREADS_DELAY) != 0)
-			fprintf(stderr, "Error in usleep");
+		if (pid != 0)
+		{
+			data->philozophers[i].pid = pid;
+			philo_run();
+		}
 	}
-	philo_monitor(data);
 	while (--i >= 0)
 	{
+		//waitpid
 		if (pthread_join(data->philozophers[i].tid, NULL) != 0)
 		{
 			fprintf(stderr, "Cannot join thread %d\n", i);

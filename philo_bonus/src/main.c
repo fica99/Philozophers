@@ -13,42 +13,22 @@
 #include "philo_precomp.h"
 #include "philo.h"
 
-t_philo_bool	philo_is_running(t_philo_data *data)
-{
-	t_philo_bool	is_running;
-
-	philo_mutex_lock(&data->mutex_is_running);
-	is_running = data->is_running;
-	philo_mutex_unlock(&data->mutex_is_running);
-	return (is_running);
-}
-
-void	philo_set_is_running(t_philo_data *data, t_philo_bool is_running)
-{
-	philo_mutex_lock(&data->mutex_is_running);
-	data->is_running = is_running;
-	philo_mutex_unlock(&data->mutex_is_running);
-}
-
 void	philo_free_data(t_philo_data *data)
 {
 	int	i;
 
-	if (philo_mutex_destroy(&data->mutex_writing) != PHILO_SUCCESS
-		|| philo_mutex_destroy(&data->mutex_is_running) != PHILO_SUCCESS)
+	if (philo_sem_destroy(&data->sem_forks) != PHILO_SUCCESS
+		|| philo_sem_destroy(&data->sem_writing) != PHILO_SUCCESS)
 		return ;
 	i = -1;
 	while (++i < data->par[0])
 	{
-		if (philo_mutex_destroy(data->forks + i) != PHILO_SUCCESS
-			|| philo_mutex_destroy(&data->philozophers[i].mutex_eating)
+		if (philo_sem_destroy(data->philozophers[i].sem_eating)
 			!= PHILO_SUCCESS)
 			return ;
 	}
 	if (data->philozophers != NULL)
 		free(data->philozophers);
-	if (data->forks != NULL)
-		free(data->forks);
 }
 
 int	main(int argc, char **argv)

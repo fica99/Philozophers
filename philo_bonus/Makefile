@@ -27,7 +27,7 @@ SRC_FLS	=		$(PRE_FLS) \
 				philo_init.c \
 				philo_run.c \
 				philo_time.c \
-				philo_mutex.c
+				philo_sem.c
 
 # ------------  FILEPATHS  --------------------------------------------------- #
 SRCS	=		$(addprefix $(SRC_DIR)/, $(SRC_FLS))

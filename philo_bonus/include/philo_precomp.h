@@ -35,20 +35,34 @@
 */
 # include <string.h>
 /*
-** ------------pthread_mutex_init---------
 ** ------------pthread_create-------------
 ** ------------pthread_join---------------
-** ------------pthread_mutex_lock---------
 */
 # include <pthread.h>
+/*
+** ------------sem_open-------------------
+** ------------sem_close------------------
+** ------------sem_wait-------------------
+** ------------sem_post-------------------
+*/
+# include <fcntl.h>
+# include <sys/stat.h>
+# include <semaphore.h>
 /*
 ** ------------gettimeofday----------------
 */
 # include <sys/time.h>
 /*
+** ------------fork------------------------
 ** ------------usleep----------------------
 */
 # include <unistd.h>
+/*
+** ------------fork------------------------
+** ------------waitpid---------------------
+*/
+# include <sys/types.h>
+# include <sys/wait.h>
 /*
 ** --Macroses--
 */
@@ -68,12 +82,4 @@ typedef enum e_philo_bool
 	Philo_false = 0,
 	Philo_true = 1,
 }	t_philo_bool;
-/*
-** --Functions--
-*/
-/*
-** ------------MAX/MIN--------------------
-*/
-int	ft_min(int x, int y);
-int	ft_max(int x, int y);
 #endif

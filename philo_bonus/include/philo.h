@@ -61,29 +61,28 @@ typedef enum e_philo_actions
 */
 typedef struct s_philo
 {
-	pthread_t			tid;
+	pthread_t			tid_monitor;
+	pid_t				pid;
 	int					id;
 	unsigned long		last_eat_time;
 	int					nb_eat;
 	struct s_philo_data	*data;
-	pthread_mutex_t		mutex_eating;
+	sem_t				*sem_eating;
 }						t_philo;
 
 typedef struct s_philo_data
 {
 	int				par[PHILO_MAX_NB_ARGS];
 	t_philo			*philozophers;
-	pthread_mutex_t	*forks;
-	t_philo_bool	is_running;
-	pthread_mutex_t	mutex_is_running;
-	pthread_mutex_t	mutex_writing;
+	sem_t			*sem_forks;
+	sem_t			*sem_writing;
 }					t_philo_data;
 
 /*
 ** --Functions--
 */
 /*
-** ------------philo_time.c------------------
+** ------------philo_time.c-----------------
 */
 unsigned long	philo_get_current_time(void);
 unsigned long	philo_elapsed_time(void);
@@ -113,10 +112,12 @@ void			philo_set_is_running(t_philo_data *data,
 					t_philo_bool is_running);
 void			philo_free_data(t_philo_data *data);
 /*
-** ------------philo_mutex.c--------------------------
+** ------------philo_sem.c--------------------------
 */
-int				philo_mutex_destroy(pthread_mutex_t *mutex);
-int				philo_mutex_init(pthread_mutex_t *mutex);
-int				philo_mutex_lock(pthread_mutex_t *mutex);
-int				philo_mutex_unlock(pthread_mutex_t *mutex);
+char			*philo_sem_name(char const *base, char *buffer, int position);
+int				philo_sem_destroy(sem_t *sem);
+int				philo_sem_init(sem_t *sem, const char *name,
+					unsigned int value);
+int				philo_sem_wait(sem_t *sem);
+int				philo_sem_post(sem_t *sem);
 #endif

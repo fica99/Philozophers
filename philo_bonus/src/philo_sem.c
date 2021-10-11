@@ -13,41 +13,66 @@
 #include "philo_precomp.h"
 #include "philo.h"
 
-int	philo_mutex_destroy(pthread_mutex_t *mutex)
+char	*philo_sem_name(char const *base, char *buffer, int position)
 {
-	if (pthread_mutex_destroy(mutex) != PHILO_SUCCESS)
+	size_t	i;
+
+	i = 0;
+	while (base[i] != '\0')
 	{
-		fprintf(stderr, "Cannot destroy mutex\n");
+		buffer[i] = base[i];
+		++i;
+	}
+	while (position > 0)
+	{
+		buffer[i++] = (position % 10) + '0';
+		position /= 10;
+	}
+	buffer[i] = 0;
+	return (buffer);
+}
+
+int	philo_sem_destroy(sem_t *sem)
+{
+	if (sem_close(sem) == PHILO_FAILURE)
+	{
+		fprintf(stderr, "Cannot close semaphore\n");
 		return (PHILO_FAILURE);
 	}
 	return (PHILO_SUCCESS);
 }
 
-int	philo_mutex_init(pthread_mutex_t *mutex)
+int	philo_sem_init(sem_t *sem, const char *name, unsigned int value)
 {
-	if (pthread_mutex_init(mutex, NULL) != PHILO_SUCCESS)
+	sem = sem_open(name, O_CREAT | O_EXCL, S_IRWXU, value)
+	if (sem == NULL)
 	{
-		fprintf(stderr, "Cannot init mutex\n");
+		fprintf(stderr, "Cannot open semaphore\n");
+		return (PHILO_FAILURE);
+	}
+	if (sem_unlink(name) != PHILO_SUCCESS)
+	{
+		fprintf(stderr, "Cannot unlink semaphore\n");
 		return (PHILO_FAILURE);
 	}
 	return (PHILO_SUCCESS);
 }
 
-int	philo_mutex_lock(pthread_mutex_t *mutex)
+int	philo_sem_wait(sem_t *sem)
 {
-	if (pthread_mutex_lock(mutex) != PHILO_SUCCESS)
+	if (sem_wait(sem) != PHILO_SUCCESS)
 	{
-		fprintf(stderr, "Error in pthread_mutex_lock\n");
+		fprintf(stderr, "Error in sem_wait\n");
 		return (PHILO_FAILURE);
 	}
 	return (PHILO_SUCCESS);
 }
 
-int	philo_mutex_unlock(pthread_mutex_t *mutex)
+int	philo_sem_post(sem_t *sem)
 {
-	if (pthread_mutex_unlock(mutex) != PHILO_SUCCESS)
+	if (sem_post(sem) != PHILO_SUCCESS)
 	{
-		fprintf(stderr, "Error in pthread_mutex_unlock\n");
+		fprintf(stderr, "Error in sem_post\n");
 		return (PHILO_FAILURE);
 	}
 	return (PHILO_SUCCESS);

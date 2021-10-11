@@ -95,7 +95,7 @@ void	philo_print_action(t_philo_actions action, t_philo *philo)
 	philo_mutex_lock(&philo->data->mutex_writing);
 	time_from_start = philo_elapsed_time();
 	if (philo_is_running(philo->data))
-		printf("%-10lu %d %s\n", time_from_start, philo->id, text);
+		printf("%lu %d %s\n", time_from_start, philo->id, text);
 	if (action == PHILO_DIED)
 		philo_set_is_running(philo->data, Philo_false);
 	philo_mutex_unlock(&philo->data->mutex_writing);

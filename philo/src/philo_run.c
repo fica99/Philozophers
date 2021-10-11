@@ -27,8 +27,8 @@ static int	philo_eat(t_philo *philo)
 	philo_mutex_lock(philo->data->forks + min);
 	philo_print_action(PHILO_TAKE_FORK, philo);
 	philo_mutex_lock(philo->data->forks + max);
-	philo_print_action(PHILO_TAKE_FORK, philo);
 	philo_mutex_lock(&philo->mutex_eating);
+	philo_print_action(PHILO_TAKE_FORK, philo);
 	philo->last_eat_time = philo_elapsed_time();
 	++philo->nb_eat;
 	philo_print_action(PHILO_EATING, philo);

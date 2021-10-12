@@ -29,7 +29,7 @@ __usage :__
 
 `./philo Number_of_philosophers Time_to_die Time_to_eat Time_to_sleep [Number_of_times_each_philosopher_must_eat]`
 
-arguments in square brackets are not required (number_of_time_each_philosophers_must_eat)
+arguments in square brackets are not required (Number_of_times_each_philosopher_must_eat)
 
 ![alt text](https://i.ibb.co/HTpDZBc/Screenshot-2021-10-12-182745.png)
 

@@ -22,7 +22,7 @@ unsigned long	philo_get_current_time(void)
 	int				res;
 
 	res = gettimeofday(&tv, NULL);
-	if (res != 0)
+	if (res == PHILO_FAILURE)
 		fprintf(stderr, "Error in gettimeofday");
 	i = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	return (i);
@@ -49,7 +49,7 @@ int	philo_smart_sleep(t_philo_data *data, unsigned long sleep_time_ms)
 		&& philo_is_running(data) == Philo_true)
 	{
 		res = usleep(MIN_SLEEP_TIME_MICROSECS);
-		if (res != 0)
+		if (res == PHILO_FAILURE)
 		{
 			fprintf(stderr, "Error in usleep");
 			return (PHILO_FAILURE);

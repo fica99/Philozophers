@@ -81,7 +81,7 @@ static void	philo_monitor(t_philo_data *data)
 				is_eated = Philo_false;
 		}
 		philo_set_is_running(data, !is_eated);
-		if (usleep(PHILO_MONITOR_DELAY) != 0)
+		if (usleep(PHILO_MONITOR_DELAY) == PHILO_FAILURE)
 			fprintf(stderr, "Error in usleep");
 	}
 }
@@ -95,18 +95,18 @@ int	philo_run_threads(t_philo_data *data)
 	while (++i < data->par[0])
 	{
 		if (pthread_create(&(data->philozophers[i].tid), NULL, philo_run,
-				(void*)(data->philozophers + i)) != 0)
+				(void*)(data->philozophers + i)) == PHILO_FAILURE)
 		{
 			fprintf(stderr, "Cannot create thread %d\n", i);
 			return (PHILO_FAILURE);
 		}
-		if (usleep(PHILO_THREADS_DELAY) != 0)
+		if (usleep(PHILO_THREADS_DELAY) == PHILO_FAILURE)
 			fprintf(stderr, "Error in usleep");
 	}
 	philo_monitor(data);
 	while (--i >= 0)
 	{
-		if (pthread_join(data->philozophers[i].tid, NULL) != 0)
+		if (pthread_join(data->philozophers[i].tid, NULL) == PHILO_FAILURE)
 		{
 			fprintf(stderr, "Cannot join thread %d\n", i);
 			return (PHILO_FAILURE);

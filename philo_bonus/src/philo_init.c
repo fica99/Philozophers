@@ -13,11 +13,6 @@
 #include "philo_precomp.h"
 #include "philo.h"
 
-#define PHILO_SEM_FORKS "PhiloSemaphoreForks"
-#define PHILO_SEM_WRITING "PhiloSemaphoreWriting"
-#define PHILO_SEM_EATING "PhiloSemaphoreEating"
-#define PHILO_SEM_MAX_LENGTH_NAME 260
-
 static int	philo_init_params(int argc, char **argv, int *params)
 {
 	int	i;
@@ -66,7 +61,7 @@ static int	philo_validate_params(int argc, int *params)
 
 static int	philo_init_data(t_philo_data *data)
 {
-	int	i;
+	int		i;
 	char	name[PHILO_SEM_MAX_LENGTH_NAME];
 
 	data->philozophers = (t_philo *)malloc(sizeof(t_philo) * data->par[0]);
@@ -75,8 +70,8 @@ static int	philo_init_data(t_philo_data *data)
 		fprintf(stderr, "Cannot allocate memory\n");
 		return (PHILO_FAILURE);
 	}
-	if (philo_sem_init(data->sem_forks, PHILO_SEM_FORKS, data->par[0]) != PHILO_SUCCESS
-		|| philo_sem_init(data->sem_writing, PHILO_SEM_WRITING, 1) != PHILO_SUCCESS)
+	if (philo_sem_open(&data->sem_forks, PHILO_SEM_FORKS, data->par[0]) != PHILO_SUCCESS
+		|| philo_sem_open(&data->sem_writing, PHILO_SEM_WRITING, 1) != PHILO_SUCCESS)
 		return (PHILO_FAILURE);
 	i = -1;
 	while (++i < data->par[0])
@@ -84,7 +79,7 @@ static int	philo_init_data(t_philo_data *data)
 		memset((void *)(data->philozophers + i), 0, sizeof(t_philo));
 		data->philozophers[i].id = i + 1;
 		data->philozophers[i].data = data;
-		if (philo_sem_init(data->philozophers[i].sem_eating,
+		if (philo_sem_open(&data->philozophers[i].sem_eating,
 			philo_sem_name(PHILO_SEM_EATING, name, i), 1) != PHILO_SUCCESS)
 			return (PHILO_FAILURE);
 	}

@@ -15,17 +15,16 @@
 
 void	philo_free_data(t_philo_data *data)
 {
-	int	i;
+	int		i;
+	char	name[PHILO_SEM_MAX_LENGTH_NAME];
 
-	if (philo_sem_destroy(&data->sem_forks) != PHILO_SUCCESS
-		|| philo_sem_destroy(&data->sem_writing) != PHILO_SUCCESS)
-		return ;
+	philo_sem_close(&data->sem_forks, PHILO_SEM_FORKS);
+	philo_sem_close(&data->sem_writing, PHILO_SEM_WRITING);
 	i = -1;
 	while (++i < data->par[0])
 	{
-		if (philo_sem_destroy(data->philozophers[i].sem_eating)
-			!= PHILO_SUCCESS)
-			return ;
+		philo_sem_close(&data->philozophers[i].sem_eating,
+			philo_sem_name(PHILO_SEM_EATING, name, i));
 	}
 	if (data->philozophers != NULL)
 		free(data->philozophers);
@@ -38,7 +37,7 @@ int	main(int argc, char **argv)
 
 	if (philo_init(argc, argv, &data) == PHILO_FAILURE)
 		return (EXIT_FAILURE);
-	res = philo_run_threads(&data);
+	res = philo_run_processes(&data);
 	philo_free_data(&data);
 	if (res == PHILO_FAILURE)
 		return (EXIT_FAILURE);

@@ -32,27 +32,25 @@ char	*philo_sem_name(char const *base, char *buffer, int position)
 	return (buffer);
 }
 
-int	philo_sem_destroy(sem_t *sem)
+int	philo_sem_close(sem_t **sem, const char *name)
 {
-	if (sem_close(sem) == PHILO_FAILURE)
+	sem_unlink(name);
+	if (sem_close(*sem) == PHILO_FAILURE)
 	{
 		fprintf(stderr, "Cannot close semaphore\n");
 		return (PHILO_FAILURE);
 	}
+	*sem = NULL;
 	return (PHILO_SUCCESS);
 }
 
-int	philo_sem_init(sem_t *sem, const char *name, unsigned int value)
+int	philo_sem_open(sem_t **sem, const char *name, unsigned int value)
 {
-	sem = sem_open(name, O_CREAT | O_EXCL, S_IRWXU, value)
-	if (sem == NULL)
+	sem_unlink(name);
+	*sem = sem_open(name, O_CREAT, S_IRWXU, value);
+	if (*sem == NULL)
 	{
 		fprintf(stderr, "Cannot open semaphore\n");
-		return (PHILO_FAILURE);
-	}
-	if (sem_unlink(name) != PHILO_SUCCESS)
-	{
-		fprintf(stderr, "Cannot unlink semaphore\n");
 		return (PHILO_FAILURE);
 	}
 	return (PHILO_SUCCESS);

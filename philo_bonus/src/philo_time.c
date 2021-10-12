@@ -37,7 +37,7 @@ unsigned long	philo_elapsed_time(void)
 	return ((philo_get_current_time() - start));
 }
 
-int	philo_smart_sleep(t_philo_data *data, unsigned long sleep_time_ms)
+int	philo_smart_sleep(unsigned long sleep_time_ms)
 {
 	int				res;
 	unsigned long	start_time;
@@ -45,8 +45,7 @@ int	philo_smart_sleep(t_philo_data *data, unsigned long sleep_time_ms)
 
 	start_time = philo_elapsed_time();
 	current_time = start_time;
-	while (sleep_time_ms > (current_time - start_time)
-		&& philo_is_running(data) == Philo_true)
+	while (sleep_time_ms > (current_time - start_time))
 	{
 		res = usleep(MIN_SLEEP_TIME_MICROSECS);
 		if (res != 0)
@@ -56,7 +55,5 @@ int	philo_smart_sleep(t_philo_data *data, unsigned long sleep_time_ms)
 		}
 		current_time = philo_elapsed_time();
 	}
-	if (philo_is_running(data) == Philo_false)
-		return (PHILO_FAILURE);
 	return (PHILO_SUCCESS);
 }

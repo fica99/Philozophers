@@ -36,7 +36,7 @@
 # include <string.h>
 /*
 ** ------------pthread_create-------------
-** ------------pthread_join---------------
+** ------------pthread_detach-------------
 */
 # include <pthread.h>
 /*
@@ -63,6 +63,10 @@
 */
 # include <sys/types.h>
 # include <sys/wait.h>
+/*
+** ------------kill------------------------
+*/
+# include <signal.h>
 /*
 ** --Macroses--
 */

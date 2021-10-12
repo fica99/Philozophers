@@ -92,11 +92,10 @@ void	philo_print_action(t_philo_actions action, t_philo *philo)
 		text = PHILO_TAKE_FORK_TEXT;
 	else if (action == PHILO_DIED)
 		text = PHILO_DIED_TEXT;
-	philo_mutex_lock(&philo->data->mutex_writing);
+	philo_sem_wait(philo->data->sem_writing);
 	time_from_start = philo_elapsed_time();
-	if (philo_is_running(philo->data))
-		printf("%lu %d %s\n", time_from_start, philo->id, text);
+	printf("%lu %d %s\n", time_from_start, philo->id, text);
 	if (action == PHILO_DIED)
-		philo_set_is_running(philo->data, Philo_false);
-	philo_mutex_unlock(&philo->data->mutex_writing);
+		exit(EXIT_SUCCESS);
+	philo_sem_post(philo->data->sem_writing);
 }

@@ -17,6 +17,10 @@
 ** --Macroses--
 */
 /*
+** -------Limits--------------------
+*/
+# define PHILO_SEM_MAX_LENGTH_NAME 260
+/*
 ** -------Params names--------------------
 */
 # define PHILO_NB_PHILO "Number_of_philosophers"
@@ -43,6 +47,12 @@
 # define PHILO_THINKING_TEXT "is thinking"
 # define PHILO_DIED_TEXT "died"
 /*
+** -------Semaphore names-----
+*/
+# define PHILO_SEM_FORKS "/philo_semaphore_forks"
+# define PHILO_SEM_WRITING "/philo_semaphore_writing"
+# define PHILO_SEM_EATING "/philo_semaphore_eating"
+/*
 ** --Enums--
 */
 /*
@@ -61,7 +71,6 @@ typedef enum e_philo_actions
 */
 typedef struct s_philo
 {
-	pthread_t			tid_monitor;
 	pid_t				pid;
 	int					id;
 	unsigned long		last_eat_time;
@@ -86,8 +95,7 @@ typedef struct s_philo_data
 */
 unsigned long	philo_get_current_time(void);
 unsigned long	philo_elapsed_time(void);
-int				philo_smart_sleep(t_philo_data *data,
-					unsigned long sleep_time_ms);
+int				philo_smart_sleep(unsigned long sleep_time_ms);
 /*
 ** ------------philo_utils.c------------------
 */
@@ -103,20 +111,17 @@ int				philo_init(int argc, char **argv, t_philo_data *data);
 /*
 ** ------------philo_run.c---------------------
 */
-int				philo_run_threads(t_philo_data *data);
+int				philo_run_processes(t_philo_data *data);
 /*
 ** ------------main.c--------------------------
 */
-t_philo_bool	philo_is_running(t_philo_data *data);
-void			philo_set_is_running(t_philo_data *data,
-					t_philo_bool is_running);
 void			philo_free_data(t_philo_data *data);
 /*
 ** ------------philo_sem.c--------------------------
 */
 char			*philo_sem_name(char const *base, char *buffer, int position);
-int				philo_sem_destroy(sem_t *sem);
-int				philo_sem_init(sem_t *sem, const char *name,
+int				philo_sem_close(sem_t **sem, const char *name);
+int				philo_sem_open(sem_t **sem, const char *name,
 					unsigned int value);
 int				philo_sem_wait(sem_t *sem);
 int				philo_sem_post(sem_t *sem);

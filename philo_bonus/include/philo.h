@@ -32,12 +32,11 @@
 ** -------Limits of params-------------
 */
 # define PHILO_MAX_NB_ARGS 6
-# define PHILO_MIN_NB_PHILO 2
-# define PHILO_MAX_NB_PHILO 200
-# define PHILO_MIN_TIME_TO_DIE 60
-# define PHILO_MIN_TIME_TO_EAT 60
-# define PHILO_MIN_TIME_TO_SLEEP 60
-# define PHILO_MIN_NB_EATINGS 1
+# define PHILO_MIN_NB_PHILO 0
+# define PHILO_MIN_TIME_TO_DIE 0
+# define PHILO_MIN_TIME_TO_EAT 0
+# define PHILO_MIN_TIME_TO_SLEEP 0
+# define PHILO_MIN_NB_EATINGS 0
 /*
 ** -------Philozophers actions text-----
 */

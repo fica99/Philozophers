@@ -39,20 +39,20 @@ static int	philo_init_params(int argc, char **argv, int *params)
 
 static int	philo_validate_params(int argc, int *params)
 {
-	if (params[0] < PHILO_MIN_NB_PHILO || params[0] > PHILO_MAX_NB_PHILO)
-		fprintf(stderr, "Wrong parameter! %s must be >= %d && <= %d.\n",
-		PHILO_NB_PHILO, PHILO_MIN_NB_PHILO, PHILO_MAX_NB_PHILO);
-	else if (params[1] < PHILO_MIN_TIME_TO_DIE)
-		fprintf(stderr, "Wrong parameter! %s must be >= %d ms.\n",
+	if (params[0] <= PHILO_MIN_NB_PHILO)
+		fprintf(stderr, "Wrong parameter! %s must be > %d.\n",
+		PHILO_NB_PHILO, PHILO_MIN_NB_PHILO);
+	else if (params[1] <= PHILO_MIN_TIME_TO_DIE)
+		fprintf(stderr, "Wrong parameter! %s must be > %d ms.\n",
 		PHILO_TIME_TO_DIE, PHILO_MIN_TIME_TO_DIE);
-	else if (params[2] < PHILO_MIN_TIME_TO_EAT)
-		fprintf(stderr, "Wrong parameter! %s must be >= %d ms.\n",
+	else if (params[2] <= PHILO_MIN_TIME_TO_EAT)
+		fprintf(stderr, "Wrong parameter! %s must be > %d ms.\n",
 		PHILO_TIME_TO_EAT, PHILO_MIN_TIME_TO_EAT);
-	else if (params[3] < PHILO_MIN_TIME_TO_SLEEP)
-		fprintf(stderr, "Wrong parameter! %s must be >= %d ms.\n",
+	else if (params[3] <= PHILO_MIN_TIME_TO_SLEEP)
+		fprintf(stderr, "Wrong parameter! %s must be > %d ms.\n",
 		PHILO_TIME_TO_SLEEP, PHILO_MIN_TIME_TO_SLEEP);
-	else if (argc == PHILO_MAX_NB_ARGS && params[4] < PHILO_MIN_NB_EATINGS)
-		fprintf(stderr, "Wrong parameter! %s must be >= %d.\n",
+	else if (argc == PHILO_MAX_NB_ARGS && params[4] <= PHILO_MIN_NB_EATINGS)
+		fprintf(stderr, "Wrong parameter! %s must be > %d.\n",
 		PHILO_NB_EATINGS, PHILO_MIN_NB_EATINGS);
 	else
 		return (PHILO_SUCCESS);
@@ -100,7 +100,6 @@ int	philo_init(int argc, char **argv, t_philo_data *data)
 	if (philo_init_data(data) == PHILO_FAILURE)
 	{
 		fprintf(stderr, "Error in data initialization\n");
-		philo_free_data(data);
 		return (PHILO_FAILURE);
 	}
 	return (PHILO_SUCCESS);

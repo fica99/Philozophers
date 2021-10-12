@@ -26,6 +26,11 @@ static int	philo_eat(t_philo *philo)
 	max = ft_max(philo->id - 1, philo->id % philo->data->par[0]);
 	philo_mutex_lock(philo->data->forks + min);
 	philo_print_action(PHILO_TAKE_FORK, philo);
+	if (min == max)
+	{
+		philo_mutex_unlock(philo->data->forks + min);
+		return (PHILO_FAILURE);
+	}
 	philo_mutex_lock(philo->data->forks + max);
 	philo_mutex_lock(&philo->mutex_eating);
 	philo_print_action(PHILO_TAKE_FORK, philo);

@@ -119,7 +119,6 @@ int	philo_run_processes(t_philo_data *data)
 	pid = waitpid(-1, &status, 0);
 	if (pid == PHILO_FAILURE)
 	{
-		perror("philo_create_processes");
 		fprintf(stderr, "Error in waitpid %d\n", status);
 	}
 	i = -1;

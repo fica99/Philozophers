@@ -1,11 +1,16 @@
 # Philozophers
-![](https://developer.android.com/courses/extras/images/multi-threading-2.png)
----
+
+[Project PDF](https://github.com/fica99/Philozophers/blob/main/en.subject.pdf)
+
+[Subject description](https://github.com/fica99/Philozophers/wiki/Subject)
+
+-----
 
 Philosophers an individual project at [42](https://www.42.fr/42-network/) about introduction to the basics of process threading, and how work on the same memory space.
 And learn about mutexes, semaphores, and shared memory.
 
 ## About the project
+
 This project serves as an introduction to [multithreading](https://en.wikipedia.org/wiki/Multithreading_(computer_architecture)).
 The purpose was to build 2 different programs to solve [the dining philosophers problem](https://en.wikipedia.org/wiki/Dining_philosophers_problem), each with different constraints.
 
@@ -20,6 +25,8 @@ It was originally formulated in *1965 by Edsger Dijkstra* as a student exam exer
 ## Installation 🖥
 
 To test the project, go to one of the folders __*philo*__ or __*philo_bonus*__ and make a `make`. Then, you can test the project using an executable.
+
+![alt text](https://i.ibb.co/DzB93NM/Screenshot-2021-10-13-121833.png)
 
 __example :__
 

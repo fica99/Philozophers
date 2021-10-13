@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 20:20:04 by aashara-          #+#    #+#             */
-/*   Updated: 2021/10/10 16:35:19 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/10/13 11:26:30 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #define MAX_INT_LENGTH 10
 
-t_philo_bool	philo_isspace(int c)
+static t_philo_bool	philo_isspace(int c)
 {
 	if (c == ' ' || c == '\f' || c == '\n' || c == '\r' || c == '\t'
 		|| c == '\v')
@@ -23,7 +23,7 @@ t_philo_bool	philo_isspace(int c)
 	return (Philo_false);
 }
 
-t_philo_bool	philo_isdigit(int c)
+static t_philo_bool	philo_isdigit(int c)
 {
 	return (c >= '0' && c <= '9');
 }

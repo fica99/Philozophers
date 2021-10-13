@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 21:38:43 by aashara-          #+#    #+#             */
-/*   Updated: 2021/10/10 18:17:05 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/10/13 09:44:45 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,19 @@ static int	philo_validate_params(int argc, int *params)
 {
 	if (params[0] <= PHILO_MIN_NB_PHILO)
 		fprintf(stderr, "Wrong parameter! %s must be > %d.\n",
-		PHILO_NB_PHILO, PHILO_MIN_NB_PHILO);
+			PHILO_NB_PHILO, PHILO_MIN_NB_PHILO);
 	else if (params[1] <= PHILO_MIN_TIME_TO_DIE)
 		fprintf(stderr, "Wrong parameter! %s must be > %d ms.\n",
-		PHILO_TIME_TO_DIE, PHILO_MIN_TIME_TO_DIE);
+			PHILO_TIME_TO_DIE, PHILO_MIN_TIME_TO_DIE);
 	else if (params[2] <= PHILO_MIN_TIME_TO_EAT)
 		fprintf(stderr, "Wrong parameter! %s must be > %d ms.\n",
-		PHILO_TIME_TO_EAT, PHILO_MIN_TIME_TO_EAT);
+			PHILO_TIME_TO_EAT, PHILO_MIN_TIME_TO_EAT);
 	else if (params[3] <= PHILO_MIN_TIME_TO_SLEEP)
 		fprintf(stderr, "Wrong parameter! %s must be > %d ms.\n",
-		PHILO_TIME_TO_SLEEP, PHILO_MIN_TIME_TO_SLEEP);
+			PHILO_TIME_TO_SLEEP, PHILO_MIN_TIME_TO_SLEEP);
 	else if (argc == PHILO_MAX_NB_ARGS && params[4] <= PHILO_MIN_NB_EATINGS)
 		fprintf(stderr, "Wrong parameter! %s must be > %d.\n",
-		PHILO_NB_EATINGS, PHILO_MIN_NB_EATINGS);
+			PHILO_NB_EATINGS, PHILO_MIN_NB_EATINGS);
 	else
 		return (PHILO_SUCCESS);
 	return (PHILO_FAILURE);
@@ -70,8 +70,9 @@ static int	philo_init_data(t_philo_data *data)
 		fprintf(stderr, "Cannot allocate memory\n");
 		return (PHILO_FAILURE);
 	}
-	if (philo_sem_open(&data->sem_forks, PHILO_SEM_FORKS, data->par[0]) != PHILO_SUCCESS
-		|| philo_sem_open(&data->sem_writing, PHILO_SEM_WRITING, 1) != PHILO_SUCCESS)
+	if (philo_sem_open(&data->sem_forks, PHILO_SEM_FORKS, data->par[0])
+		!= PHILO_SUCCESS || philo_sem_open(&data->sem_writing,
+			PHILO_SEM_WRITING, 1) != PHILO_SUCCESS)
 		return (PHILO_FAILURE);
 	i = -1;
 	while (++i < data->par[0])
@@ -80,7 +81,7 @@ static int	philo_init_data(t_philo_data *data)
 		data->philozophers[i].id = i + 1;
 		data->philozophers[i].data = data;
 		if (philo_sem_open(&data->philozophers[i].sem_eating,
-			philo_sem_name(PHILO_SEM_EATING, name, i), 1) != PHILO_SUCCESS)
+				philo_sem_name(PHILO_SEM_EATING, name, i), 1) != PHILO_SUCCESS)
 			return (PHILO_FAILURE);
 	}
 	return (PHILO_SUCCESS);

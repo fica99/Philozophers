@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/05 22:55:51 by aashara-          #+#    #+#             */
-/*   Updated: 2021/10/10 18:17:06 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/10/13 09:45:39 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ static int	philo_run(t_philo *philo)
 {
 	pthread_t	tid;
 
-	if (pthread_create(&tid, NULL, philo_monitor, (void*)(philo)) == PHILO_FAILURE)
+	if (pthread_create(&tid, NULL, philo_monitor, (void *)(philo))
+		== PHILO_FAILURE)
 	{
 		fprintf(stderr, "Cannot create thread philo_monitor\n");
 		return (PHILO_FAILURE);
@@ -127,7 +128,8 @@ int	philo_run_processes(t_philo_data *data)
 		if (pid != data->philozophers[i].pid)
 		{
 			if (kill(data->philozophers[i].pid, SIGQUIT) == PHILO_FAILURE)
-				fprintf(stderr, "Cannot kill process %d\n", data->philozophers[i].pid);
+				fprintf(stderr, "Cannot kill process %d\n",
+					data->philozophers[i].pid);
 		}
 	}
 	return (PHILO_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 18:41:58 by aashara-          #+#    #+#             */
-/*   Updated: 2021/10/10 18:17:18 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/10/13 11:12:47 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@
 /*
 ** -------Params names--------------------
 */
-# define PHILO_NB_PHILO "Number_of_philosophers"
-# define PHILO_TIME_TO_DIE "Time_to_die"
-# define PHILO_TIME_TO_EAT "Time_to_eat"
-# define PHILO_TIME_TO_SLEEP "Time_to_sleep"
-# define PHILO_NB_EATINGS "Number_of_times_each_philosopher_must_eat"
+# define PHILO_NB_PHILO "number_of_philosophers"
+# define PHILO_TIME_TO_DIE "time_to_die"
+# define PHILO_TIME_TO_EAT "time_to_eat"
+# define PHILO_TIME_TO_SLEEP "time_to_sleep"
+# define PHILO_NB_EATINGS "number_of_times_each_philosopher_must_eat"
 /*
 ** -------Limits of params-------------
 */
@@ -84,15 +84,12 @@ typedef struct s_philo_data
 /*
 ** ------------philo_time.c------------------
 */
-unsigned long	philo_get_current_time(void);
 unsigned long	philo_elapsed_time(void);
 int				philo_smart_sleep(t_philo_data *data,
 					unsigned long sleep_time_ms);
 /*
 ** ------------philo_utils.c------------------
 */
-t_philo_bool	philo_isspace(int c);
-t_philo_bool	philo_isdigit(int c);
 t_philo_bool	philo_is_int(const char *str);
 int				philo_atoi(const char *str);
 void			philo_print_action(t_philo_actions action, t_philo *philo);

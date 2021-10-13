@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/01 10:28:38 by marvin            #+#    #+#             */
-/*   Updated: 2021/10/10 16:41:54 by aashara-         ###   ########.fr       */
+/*   Updated: 2021/10/13 11:11:53 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #define MIN_SLEEP_TIME_MICROSECS 100
 
-unsigned long	philo_get_current_time(void)
+static unsigned long	philo_get_current_time(void)
 {
 	struct timeval	tv;
 	unsigned long	i;
